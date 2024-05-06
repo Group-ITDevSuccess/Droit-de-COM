@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block body %}
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-3 col-md-4 col-sm-3">
+                <div class="card px-3 py-5 shadow" id="form1">
+                    <div class="justify-content-center align-items-center text-center">
+                        <img src="{% static 'img/logo-inviso.ico' %}" alt="" class="img-fluid" width="100">
+                    </div>
+
+                    <h5 class="text-center mt-4">Authentification</h5>
+                    <form id="" class="form-data mt-3 mb-3" method="post" action="{% url 'guard:login' %}">
+                        {% csrf_token %}
+                        <div class="forms-inputs mb-4">
+                            <span>{{ form.username.label_tag }}</span>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback">{{ form.username.errors }}!</div>
+                            {% endif %}
+                        </div>
+                        <div class="forms-inputs mb-4">
+                            <span>{{ form.password.label_tag }}</span>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">{{ form.password.errors }}!</div>
+                            {% endif %}
+                        </div>
+                        <div class="">
+                            <button type="submit" class="btn btn-dark w-100">Connexion</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

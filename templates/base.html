@@ -1,0 +1,56 @@
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load fontawesome_6 %}
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Droit COM | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap-select.min.css' %}">
+    
+    {% fontawesome_6_static %}
+
+    {% block style %}{% endblock %}
+</head>
+<body>
+{% if user.is_authenticated %}
+    {% include 'partials/_navbar.html' %}
+{% endif %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show"
+             role="alert">
+            <strong>{{ message.tags|title }} !</strong> {{ message.message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+{% block body %}{% endblock %}
+<script src="{% static 'dist/js/jquery.min.js' %}"></script>
+<script src="{% static 'dist/js/popper.min.js' %}"></script>
+<script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'dist/js/bootstrap-select.min.js' %}"></script>
+
+<script type="text/javascript">
+    let addRow = function () {
+        let newRowData = {};
+        table.addRow(newRowData, false);
+    }
+
+    function reloadPage() {
+        window.location.reload();
+    }
+</script>
+{% block script %}
+
+{% endblock %}
+</body>
+</html>
