@@ -138,3 +138,11 @@ def are_valid_uuids(values):
             except ValueError:
                 return None
     return None
+
+
+# test = {'A': 1, 'B': 15}
+# test2 = {'B': 'N'}
+# for key, value in test2.items():
+#     if key not in test:
+#         test[key] = value
+# print(test)

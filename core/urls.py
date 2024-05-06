@@ -21,14 +21,13 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 
 urlpatterns = [
-    path("__reload__/", include("django_browser_reload.urls")),
+    path('', include('app.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('guard.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
+    path("__reload__/", include("django_browser_reload.urls")),
     re_path(r"^static/(?P<path>.*)$", serve, {'document_root': settings.STATIC_ROOT}),
     re_path(r"^media/(?P<path>.*)$", serve, {'document_root': settings.MEDIA_ROOT}),
-    path('', include('app.urls')),
 
 ]
 urlpatterns += staticfiles_urlpatterns()
-
