@@ -32,9 +32,9 @@
                 name: value,
                 dataType: 'JSON',
                 postData: {
-                    category: `${value}`
+                    canevas: value
                 },
-                recid: 'uid',
+                {#recid: 'uid',#}
                 method: 'GET',
                 autoLoad: true,
                 advanceOnEdit: true,
@@ -49,7 +49,7 @@
                 msgNeedReload: 'Reload Nécessaire...',
                 msgRefresh: 'Rafraichissement...',
                 msgServerError: 'Erreur Serveur !',
-                sortData: [{field: 'department_name', direction: 'asc'}],
+                {#sortData: [{field: 'department_name', direction: 'asc'}],#}
                 buttons: {
                     'reload': {
                         type: 'button',
@@ -109,35 +109,9 @@
                 searchMap: searchMap,
                 columnTooltip: 'bottom',
                 tooltip: w2utils.locale('{% static 'assets/w2ui/locale/fr-fr.json' %}'),
-                toolbar: {
-                    onClick(event) {
-                        if (
-                            event.target !== 'w2ui-add' &&
-                            event.target !== 'w2ui-column-on-off' &&
-                            event.target !== 'w2ui-reload' &&
-                            event.target !== 'w2ui-save' &&
-                            event.target !== 'w2ui-delete'
-                        ) {
-                            let name = event.owner.name
-                            let data;
-                            if (name === '2080_toolbar') {
-                                data = grid2080
-                            } else if (name === '8020_toolbar') {
-                                data = grid8020
-                            }
-                            data.postData = {
-                                category: `${value}`,
-                                section: event.target
-                            }
-                            data.reload()
-                            w2utils.notify(`Hebdo "${event.detail.item.text}" Sélectionnez`)
-                        }
-
-                    }
-                },
                 searches: searchable,
                 columnGroups: columnsGroup,
-                columns: columns
+                columns: columns,
             }
         }
 
@@ -187,253 +161,141 @@
                 "Achats Immobilisés: 203 204 205 207 208/ 211 212 213 215 218",
                 [
                     {
-                        field: 'department_name',
-                        text: 'Département',
-                        sortable: true,
-                        size: '120px',
-                        resizable: true,
-                        editable: {type: 'text'},
-                        frozen: true,
-                        searchable: {operator: 'contains'}
-                    },
-                    {
-                        field: 'family_name',
-                        text: 'Famille',
+                        field: 'cin',
+                        text: 'CIN',
                         sortable: true,
                         size: '120px',
                         resizable: true,
                         frozen: true,
-                        editable: {type: 'text'},
-                        searchable: {operator: 'contains'}
-                    },
-                    {
-                        field: 'article',
-                        text: 'Article',
-                        sortable: true,
-                        size: '120px',
-                        resizable: true,
-                        frozen: true,
-                        editable: {type: 'text'},
                         searchable: {operator: 'contains'},
-                        clipboardCopy: "Copier le N° Article"
+                        clipboardCopy: "Copier le N° CIN"
                     },
                     {
-                        field: 'designation',
-                        text: 'Désignation',
+                        field: 'date_cin',
+                        text: 'Date CIN',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'deliverance',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'nature',
+                        text: 'NATURE',
                         size: '150px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
-                        editable: {type: 'text'},
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'type',
-                        text: 'Import / Local',
-                        size: '75px',
+                        field: 'reference',
+                        text: 'REFERENCE',
+                        size: '150px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
-                        editable: {
-                            type: 'list', items: typeHebdo, showAll: true, openOnFocus: true, align: 'right'
-                        },
-                        render(record, extra) {
-                            switch (parseInt(extra.value)) {
-                                case 1:
-                                    extra.value = {id: 1, text: 'Import'}
-                                    break
-                                case 2:
-                                    extra.value = {id: 2, text: 'Local'}
-                                    break
-                            }
-                            return extra.value?.text || '';
-                        }
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'qte_pta',
-                        text: 'Qté',
-                        size: '100px',
-                        align: 'right',
-                        editable: {
-                            type: 'money',
-                            currencyPrefix: "",
-                            currencySuffix: "",
-                            currencyPrecision: 2,
-                            groupSymbol: " ",
-                            decimalSymbol: ".",
-                        },
-                        render: 'money'
+                        field: 'nifonline',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'pmp_pta',
-                        text: 'PMP',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money'},
-                        render: 'money'
+                        field: 'raison',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'pdv_pta',
-                        text: 'PDV',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money'},
-                        render: 'money'
+                        field: 'address',
+                        text: 'ADRESSE',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'marge_pta',
-                        text: 'Marge',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.pdv_pta && record.pmp_pta) {
-                                return parseFloat(record.pdv_pta) - parseFloat(record.pmp_pta);
-                            }
-                        }
+                        field: 'ville',
+                        text: 'VILLE',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'pourcentage_marge_pta',
-                        text: '% marge',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.pdv_pta && record.pmp_pta) {
-                                return (parseFloat(record.pdv_pta) - parseFloat(record.pmp_pta)) / parseFloat(record.pdv_pta) + ' %';
-                            }
-                        }
+                        field: 'ex_province',
+                        text: 'EX-PROVINCE',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'ca_ht_pta',
-                        text: 'CA HT',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.qte_pta && record.pdv_pta) {
-                                return parseFloat(record.pdv_pta) * parseFloat(record.pmp_pta);
-                            }
-                        }
+                        field: 'pays',
+                        text: 'PAYS',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'qte_realisation',
-                        text: 'Qté',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: 'money'
+                        field: 'comptability',
+                        text: 'COMPTABILISEES',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'pmp_realisation',
-                        text: 'PMP',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: 'money'
-                    },
-                    {
-                        field: 'pdv_realisation',
-                        text: 'PDV',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: 'money'
-                    },
-                    {
-                        field: 'marge_realisation',
-                        text: 'Marge',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.pdv_realisation && record.pmp_realisation) {
-                                return parseFloat(record.pdv_realisation) - parseFloat(record.pmp_realisation);
-                            }
-                        }
-                    },
-                    {
-                        field: 'pourcentage_marge_realisation',
-                        text: '% marge',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.pdv_realisation && record.pmp_realisation) {
-                                return (parseFloat(record.pdv_realisation) - parseFloat(record.pmp_realisation)) / parseFloat(record.pdv_realisation) + ' %';
-                            }
-                        }
-                    },
-                    {
-                        field: 'ca_ht_realisation',
-                        text: 'CA HT Rea',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.qte_realisation && record.pdv_realisation) {
-                                return parseFloat(record.pdv_realisation) * parseFloat(record.pmp_realisation);
-                            }
-                        }
-                    },
-                    {
-                        field: 'stock_realisation',
-                        text: 'Stock au 1301',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: 'money'
-                    },
-
-                    // Variable
-                    {
-                        field: 'ecart_qte',
-                        text: 'Ecart Qte',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.qte_realisation && record.qte_pta) {
-                                return parseFloat(record.qte_pta) - parseFloat(record.qte_realisation);
-                            }
-                        }
-                    },
-                    {
-                        field: 'pourcentage_ecart_qte',
-                        text: 'Ecart Qte (%)',
-                        size: '100px',
-                        align: 'right',
-                        render: function (record, extra) {
-                            if (record.qte_realisation && record.qte_pta) {
-                                return parseFloat(record.qte_pta) / (parseFloat(record.qte_realisation) - 1);
-                            }
-                        }
-                    },
-                    {
-                        field: 'ecart_ca_ht',
-                        text: 'Ecart CA HT (Valeur)',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: {type: 'money'}
-                    },
-                    {
-                        field: 'pourcentage_ecart_ca_ht',
-                        text: 'Ecart CA HT (%)',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: {type: 'money'}
-                    },
-                    {
-                        field: 'stock_prevision',
-                        text: 'Stock Prev',
-                        size: '100px',
-                        align: 'right',
-                        editable: {type: 'money',},
-                        render: {type: 'money'}
+                        field: 'versee',
+                        text: 'VERSEES',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
                     },
                 ],
                 [
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
                     {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
                     {text: '', main: true},
-                    {text: 'INFORMATION', span: 3, style: "background-color: green; color: #fff", frozen: true},
-                    {text: 'PTA', style: "background-color: #FFC000; color: #fff;", span: 6,},
-                    {text: 'REALISATION ', style: "background-color: #5B9BD5; color: #fff;", span: 6},
-                    {text: 'VARIATION ', style: "background-color: #A5A5A5; color: #fff;", span: 6},
+                    {text: 'MONTANT HORS TVA DES SOMMES ', style: "background-color: #A5A5A5; color: #fff;", span: 3},
                 ],
                 [
                     {type: 'text', field: 'department_name', label: 'Département'},
@@ -534,6 +396,9 @@
                     console.log(message)
                 })
         }
+        window.onload = function () {
+            grid1.load("{% url 'app:load_data' %}")
+        }
 
         sidebar.on('*', function (event) {
             if (event.type === 'click') {
@@ -562,14 +427,15 @@
                         grids = grid8
                         break;
                     case 'html':
-                         layout.html('main', '<div style="padding: 10px">Page de Synthèse</div>')
-                            query(layout.el('main')).removeClass('w2ui-grid').css('border-left', '1px solid #efefef')
+                        layout.html('main', '<div style="padding: 10px">Page de Synthèse</div>')
+                        query(layout.el('main')).removeClass('w2ui-grid').css('border-left', '1px solid #efefef')
                         break
                     default:
                         grids = grid1
                         break;
                 }
                 layout.html('main', grids)
+                grids.load("{% url 'app:load_data' %}")
 
                 {#console.log('Last Event: ' + event.type + ' Target: ' + event.target);#}
                 {#console.log(event);#}
