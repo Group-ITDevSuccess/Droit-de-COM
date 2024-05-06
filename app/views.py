@@ -1,16 +1,42 @@
 import json
+import uuid
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+
+from app.forms import SearchForm
+from app.models import Societe
+from data import fetch_data_from_database
+from utils import write_log
 
 
 # Create your views here.
 @login_required
 def index(request):
+    form = SearchForm()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            societe = form.cleaned_data['societe']
+            target = form.cleaned_data['target']
+            return redirect('app:reverse_index', uid=societe, target=target)
     return render(request, 'app/index.html', {
-        'path': request.path
+        'path': request.path,
+        'form': form
+    })
+
+
+@login_required
+def reverse_index(request, uid, target):
+    societe = uid
+    form = SearchForm(initial={'societe': societe, 'target': target})
+    return render(request, 'app/index.html', {
+        'path': request.path,
+        'form': form,
+        'uid': uid,
+        'target': target
     })
 
 
@@ -18,5 +44,30 @@ def index(request):
 @csrf_exempt
 def load_data(request):
     data = json.loads(request.GET.get('request'))
-    print(data.get('canevas'), data)
-    return JsonResponse([], safe=False)
+    print(data)
+    uid = data.get('uid')
+    target = data.get('target')
+    records = []
+    if uid != '' and target != '':
+        offset = data.get('offset')
+        canevas = data.get('canevas')
+        canevas = data.get('canevas')
+        try:
+            societe = Societe.objects.get(uid=uid)
+            records = fetch_data_from_database(
+                canevas=canevas,
+                target=target,
+                server=societe.connexion.server,
+                base=societe.base,
+                username=societe.connexion.login,
+                password=societe.connexion.password
+            )
+            print("Record : ", records)
+        except Societe.DoesNotExist:
+            print("Societe Inexistant !")
+        except Exception as e:
+            write_log(str(e))
+    return JsonResponse({
+        "total": len(records),
+        "records": records
+    }, safe=False)

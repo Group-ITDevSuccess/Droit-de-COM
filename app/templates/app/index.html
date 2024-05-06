@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/w2ui/w2ui-2.0.min.css' %}">
 {% endblock %}
 {% block body %}
-    <main id="main" class="" style="width: 100vw; height: 85vh;"></main>
+    <main id="main" class="" style="width: 100vw; height: 85vh; "></main>
 {% endblock %}
 {% block script %}
     <script src="{% static 'dist/js/jquery.min.js' %}"></script>
@@ -15,6 +15,7 @@
         import {
             w2grid,
             w2layout,
+            w2toolbar,
             w2sidebar,
             w2utils,
             w2alert,
@@ -32,10 +33,13 @@
                 name: value,
                 dataType: 'JSON',
                 postData: {
-                    canevas: value
+                    canevas: value,
+                    uid: '{{ uid }}',
+                    target: '{{ target }}',
                 },
                 {#recid: 'uid',#}
                 method: 'GET',
+                limit: 10000,
                 autoLoad: true,
                 advanceOnEdit: true,
                 liveSearch: true,
@@ -191,7 +195,7 @@
                     {
                         field: 'nature',
                         text: 'NATURE',
-                        size: '150px',
+                        size: '75px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
@@ -200,7 +204,7 @@
                     {
                         field: 'reference',
                         text: 'REFERENCE',
-                        size: '150px',
+                        size: '100px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
@@ -209,7 +213,7 @@
                     {
                         field: 'nifonline',
                         text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
-                        size: '150px',
+                        size: '100px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
@@ -236,7 +240,7 @@
                     {
                         field: 'ville',
                         text: 'VILLE',
-                        size: '150px',
+                        size: '125px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
@@ -261,6 +265,15 @@
                         searchable: {operator: 'contains'}
                     },
                     {
+                        field: 'nature',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        size: '75px',
+                        sortable: true,
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
                         field: 'comptability',
                         text: 'COMPTABILISEES',
                         size: '150px',
@@ -276,14 +289,15 @@
                         sortable: true,
                         resizable: true,
                         frozen: true,
+                        render: 'money',
                         searchable: {operator: 'contains'}
                     },
                 ],
                 [
-                    {
+                     {
                         text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
                         span: 3,
-                        style: "background-color: green; color: #fff",
+                       style: "background-color: green; color: #fff",
                         frozen: true
                     },
                     {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
@@ -295,7 +309,7 @@
                     {text: '', main: true},
                     {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
                     {text: '', main: true},
-                    {text: 'MONTANT HORS TVA DES SOMMES ', style: "background-color: #A5A5A5; color: #fff;", span: 3},
+                    {text: 'MONTANT HORS TVA DES SOMMES ', style: "background-color: #A5A5A5; color: #fff;", span: 3, frozen: true},
                 ],
                 [
                     {type: 'text', field: 'department_name', label: 'Département'},
@@ -385,6 +399,7 @@
 
         layout.render('#main');
         layout.html('left', sidebar)
+        layout.html('top', toolbar)
         layout.html('main', grid1)
 
         {#grid2080.localSearch()#}
@@ -396,15 +411,16 @@
                     console.log(message)
                 })
         }
-        window.onload = function () {
-            grid1.load("{% url 'app:load_data' %}")
-        }
+
+        let grids;
 
         sidebar.on('*', function (event) {
             if (event.type === 'click') {
-                let grids;
 
                 switch (event.target) {
+                    case 1:
+                        grids = grid1
+                        break;
                     case 2:
                         grids = grid2
                         break;
@@ -434,13 +450,31 @@
                         grids = grid1
                         break;
                 }
+                console.log(event)
                 layout.html('main', grids)
                 grids.load("{% url 'app:load_data' %}")
-
                 {#console.log('Last Event: ' + event.type + ' Target: ' + event.target);#}
                 {#console.log(event);#}
             }
         })
+        grid1.load("{% url 'app:load_data' %}")
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const societeField = document.querySelector('#id_societe');
+            const targetField = document.querySelector('#id_target');
+            const form = document.querySelector('#FormSearch');
+
+            societeField.addEventListener('change', handleFormChange);
+            targetField.addEventListener('change', handleFormChange);
+
+            function handleFormChange() {
+                if (societeField.value && targetField.value) {
+                    form.submit();
+                }
+            }
+        });
+
 
     </script>
 {% endblock %}

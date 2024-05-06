@@ -16,11 +16,17 @@
                         class="sr-only">(current)</span></a>
             </li>
             {% if user.is_staff %}
-                <li class="nav-item {% if path == '/accounts/administrations/' %}active{% endif %}" >
+                <li class="nav-item {% if path == '/accounts/administrations/' %}active{% endif %}">
                     <a class="nav-link " href="{% url 'guard:index' %}" tabindex="-1">Administration</a>
                 </li>
             {% endif %}
         </ul>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'app:index' %}" method="post" id="FormSearch">
+            {% csrf_token %}
+            {{ form.societe }}
+            {{ form.target }}
+            <button class="btn btn-outline-success my-2 my-sm-0" id="submitForm" type="submit" hidden="hidden">Search</button>
+        </form>
         <div class="btn text-white">
             <i class="fas fa-user " title=""></i> ({{ user.username }})
         </div>
