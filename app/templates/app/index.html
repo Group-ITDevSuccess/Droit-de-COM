@@ -13,130 +13,13 @@
     <script src="{% static 'dist/js/jquery.min.js' %}"></script>
     <script type="module">
         import {
-            query,
             w2grid,
             w2layout,
-            w2popup,
             w2sidebar,
             w2utils,
             w2alert,
-            w2ui
+            query
         } from "{% static 'assets/w2ui/w2ui-2.0.es6.min.js' %}";
-
-        let configLocal = {
-            {#"locale": "fr-FR",#}
-            "dateFormat": "dd/mm/yyyy",
-            "timeFormat": "h24",
-            "datetimeFormat": "m/d/yyyy|hh:mi pm",
-            "currencyPrefix": "",
-            "currencySuffix": "",
-            "currencyPrecision": 2,
-            "groupSymbol": " ",
-            "decimalSymbol": ".",
-            "shortmonths": ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aou", "Sep", "Oct", "Nov", "Déc"],
-            "fullmonths": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-            "shortdays": ["L", "M", "M", "J", "V", "S", "D"],
-            "fulldays": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
-            "weekStarts": "M",
-            "phrases": {
-                "${count} letters or more...": "${count} lettres ou plus...",
-                "Add new record": "Ajouter un nouvel enregistrement",
-                "Add New": "Ajouter un nouveau",
-                "Advanced Search": "Recherche avancée",
-                "after": "après",
-                "AJAX error. See console for more details.": "Erreur AJAX. Regardez la console pour plus d'information",
-                "All Fields": "Tous les champs",
-                "All": "All",
-                "Any": "Any",
-                "Are you sure you want to delete ${count} ${records}?": "Etes-vous sur de vouloir supprimer ${count} ${records}?",
-                "Attach files by dragging and dropping or Click to Select": "Affecter les fichiers par un glisser-déposer ou cliquer pour sélectionner",
-                "before": "avant",
-                "begins with": "commence par",
-                "begins": "commence",
-                "between": "entre",
-                "buffered": "mis en mémoire tampon",
-                "Cancel": "Cancel",
-                "Close": "Close",
-                "Column": "Colonne",
-                "Confirmation": "Confirmation",
-                "contains": "contient",
-                "Copied": "Copié",
-                "Copy to clipboard": "Copié dans le press-papier",
-                "Current Date & Time": "Date et Heure actuelle",
-                "Delete selected records": "Supprimer les enregistrements sélectionnés",
-                "Delete": "Supprimer",
-                "Do you want to delete search item \"${item}\"?": "Voulez-vous supprimer l'objet recherché \"${item}\"?",
-                "Edit selected record": "Editer l'enregistrements sélectionné",
-                "Edit": "Editer",
-                "Empty list": "Liste vide",
-                "ends with": "se termine par",
-                "ends": "se termine",
-                "Field should be at least ${count} characters.": "Le champ doit contenir au moins ${count} caractères.",
-                "Hide": "Cacher",
-                "in": "dans",
-                "is not": "n'est pas",
-                "is": "est",
-                "less than": "moins que",
-                "Line #": "Ligne #",
-                "Load ${count} more...": "Charger ${count} de plus...",
-                "Loading...": "Chargement...",
-                "Maximum number of files is ${count}": "Le nombre maximum de fichier est de ${count}",
-                "Maximum total size is ${count}": "La taille maximale est de ${count}",
-                "Modified": "Modifié",
-                "more than": "plus que",
-                "Multiple Fields": "Champs multiples",
-                "Name": "Nom",
-                "No items found": "Aucune donnée trouvée",
-                "No matches": "Aucun résultat",
-                "No": "Non",
-                "none": "rien",
-                "Not a float": "Ce n'est pas un nombre à virgule",
-                "Not a hex number": "Ce n'est pas un nombre en hexadécimal",
-                "Not a valid date": "Ce n'est pas une date",
-                "Not a valid email": "Ce n'est pas une adresse de courriel",
-                "Not alpha-numeric": "Le contenu n'est pas alphanumérique",
-                "Not an integer": "Ce n'est pas un entier",
-                "Not in money format": "Ce n'est pas une monnaie",
-                "not in": "pas dans",
-                "Notification": "Message",
-                "of": "de",
-                "Ok": "Ok",
-                "Opacity": "Opacity",
-                "Record ID": "Id de l'enregistrement",
-                "record": "enregistrement",
-                "records": "enregistrements",
-                "Refreshing...": "Rechargement...",
-                "Reload data in the list": "Recharger les données de la liste",
-                "Remove": "Supprimer",
-                "Remove This Field": "Supprimer ce champ",
-                "Request aborted.": "Requête annulée.",
-                "Required field": "Champ obligatoire",
-                "Reset": "Réinitialiser",
-                "Restore Default State": "Restaurer l'état par défaut",
-                "Returned data is not in valid JSON format.": "Les données retournées ne sont pas dans un format JSON valide",
-                "Save changed records": "Sauvegarder les enregistrements modifiés",
-                "Save Grid State": "Enregistrer l'état de la grille",
-                "Save": "Sauvegarder",
-                "Saved Searches": "Recherches sauvegardée",
-                "Saving...": "Sauvegarde en cours...",
-                "Search took ${count} seconds": "La recherche a pris ${count} secondes",
-                "Search": "Rechercher",
-                "Select Hour": "Sélectionner une heure",
-                "Select Minute": "Sélectionner les minutes",
-                "selected": "sélectionné",
-                "Server Response ${count} seconds": "Le serveur a répondu en ${count} secondes",
-                "Show/hide columns": "Montrer/cacher les colonnes",
-                "Show": "Montrer",
-                "Size": "Taille",
-                "Skip": "Passer",
-                "Sorting took ${count} seconds": "Le triage à pris ${count} secondes",
-                "Type to search...": "Ecrire pour rechercher...",
-                "Type": "Type",
-                "Yes": "Oui",
-                "Yesterday": "Hier",
-                "Your remote data source record count has changed, reloading from the first record.": "Le nombre d'enregistrements de votre source de données distante a changé, rechargement à partir du premier enregistrement."
-            }
-        }
 
         let semaineActuel = 16
         let typeHebdo = [
@@ -144,13 +27,12 @@
             {id: 2, text: 'Local'},
         ]
 
-        function grid(value) {
+        function grid(value, title, columns, columnsGroup, searchable, searchMap) {
             return {
                 name: value,
                 dataType: 'JSON',
                 postData: {
-                    category: `${value}`,
-                    section: null
+                    category: `${value}`
                 },
                 recid: 'uid',
                 method: 'GET',
@@ -160,7 +42,7 @@
                 multiSearch: true,
                 multiSelect: true,
                 showExtraOnSearch: 1,
-                header: 'Liste des ' + value,
+                header: title,
                 msgNotJSON: "Les données reçu n'est pas en JSON",
                 msgEmpty: 'Aucun donnée',
                 msgHTTPError: 'Erreur HTTP',
@@ -224,28 +106,9 @@
                     'checkbox': 'list',
                     'toggle': 'list'
                 },
-                searchMap: {
-                    department_name: 'department',
-                    family_name: 'family',
-                    article: 'article',
-                    designation: 'designation',
-                },
+                searchMap: searchMap,
                 columnTooltip: 'bottom',
-                tooltip: w2utils.locale(configLocal),
-                searches: [
-                    {type: 'text', field: 'department_name', label: 'Département'},
-                    {type: 'text', field: 'family_name', label: 'Famille'},
-                    {type: 'text', field: 'article', label: 'Article'},
-                    {type: 'text', field: 'designation', label: 'Désignation'},
-                ],
-                columnGroups: [
-                    {text: '', main: true},
-                    {text: '', main: true},
-                    {text: 'INFORMATION', span: 3, style: "background-color: green; color: #fff", frozen: true},
-                    {text: 'PTA', style: "background-color: #FFC000; color: #fff;", span: 6,},
-                    {text: 'REALISATION ', style: "background-color: #5B9BD5; color: #fff;", span: 6},
-                    {text: 'VARIATION ', style: "background-color: #A5A5A5; color: #fff;", span: 6},
-                ],
+                tooltip: w2utils.locale('{% static 'assets/w2ui/locale/fr-fr.json' %}'),
                 toolbar: {
                     onClick(event) {
                         if (
@@ -272,7 +135,57 @@
 
                     }
                 },
-                columns: [
+                searches: searchable,
+                columnGroups: columnsGroup,
+                columns: columns
+            }
+        }
+
+        let config = {
+            layout: {
+                name: 'layout',
+                overflow: 'auto',
+                resizable: false,
+                padding: 0,
+                panels: [
+                    {type: 'left', size: 100, resizable: true, minSize: 35},
+                    {type: 'main', size: 550, overflow: 'hidden'}
+                ]
+            },
+            sidebar: {
+                name: 'sidebar',
+                flatButton: true,
+                nodes: [
+                    {
+                        id: 'general',
+                        text: 'General',
+                        group: true,
+                        expanded: true,
+                        groupShowHide: false,
+                        nodes: [
+                            {id: '1', text: 'AI', icon: 'fas fa-list-alt', selected: true},
+                            {id: '2', text: 'ANDR', icon: 'fas fa-list-alt'},
+                            {id: '3', text: 'ADR', icon: 'fas fa-list-alt'},
+                            {id: '4', text: 'PSV', icon: 'fas fa-list-alt'},
+                            {id: '5', text: 'MV', icon: 'fas fa-list-alt'},
+                            {id: '6', text: 'SVT', icon: 'fas fa-list-alt'},
+                            {id: '7', text: 'PL', icon: 'fas fa-list-alt'},
+                            {id: '8', text: 'PLP', icon: 'fas fa-list-alt'},
+                            {id: 'html', text: 'Synthèse', icon: 'fas fa-list-alt'},
+                        ],
+                        onCollapse(event) {
+                            event.preventDefault()
+                        }
+                    }
+                ],
+                onFlat(event) {
+                    layout.sizeTo('left', (event.detail.goFlat ? 35 : 100), true)
+                },
+            },
+            grid1: grid(
+                '1',
+                "Achats Immobilisés: 203 204 205 207 208/ 211 212 213 215 218",
+                [
                     {
                         field: 'department_name',
                         text: 'Département',
@@ -513,98 +426,155 @@
                         editable: {type: 'money',},
                         render: {type: 'money'}
                     },
-                ]
-            }
-        }
-
-        let config = {
-            layout: {
-                name: 'layout',
-                overflow: 'auto',
-                resizable: false,
-                padding: 0,
-                panels: [
-                    {type: 'left', size: 100, resizable: true, minSize: 35},
-                    {type: 'main', size: 550, overflow: 'hidden'}
-                ]
-            },
-            sidebar: {
-                name: 'sidebar',
-                flatButton: true,
-                nodes: [
-                    {
-                        id: 'general',
-                        text: 'General',
-                        group: true,
-                        expanded: true,
-                        groupShowHide: false,
-                        nodes: [
-                            {id: 'grid2080', text: '2080', icon: 'fas fa-list-alt', selected: true},
-                            {id: 'grid8020', text: '8020', icon: 'fas fa-list-alt'},
-                            {id: 'html', text: 'Synthèse', icon: 'fas fa-list-alt'},
-                        ],
-                        onCollapse(event) {
-                            event.preventDefault()
-                        }
-                    }
                 ],
-                onFlat(event) {
-                    layout.sizeTo('left', (event.detail.goFlat ? 35 : 100), true)
-                },
-                onClick(event) {
-                    switch (event.target) {
-                        case 'grid2080':
-                            layout.html('main', grid2080)
-                            break
-                        case 'grid8020':
-                            layout.html('main', grid8020)
-                            break
-                        case 'html':
-                            layout.html('main', '<div style="padding: 10px">Page de Synthèse</div>')
-                            query(layout.el('main')).removeClass('w2ui-grid').css('border-left', '1px solid #efefef')
-                            break
-                    }
+                [
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: 'INFORMATION', span: 3, style: "background-color: green; color: #fff", frozen: true},
+                    {text: 'PTA', style: "background-color: #FFC000; color: #fff;", span: 6,},
+                    {text: 'REALISATION ', style: "background-color: #5B9BD5; color: #fff;", span: 6},
+                    {text: 'VARIATION ', style: "background-color: #A5A5A5; color: #fff;", span: 6},
+                ],
+                [
+                    {type: 'text', field: 'department_name', label: 'Département'},
+                    {type: 'text', field: 'family_name', label: 'Famille'},
+                    {type: 'text', field: 'article', label: 'Article'},
+                    {type: 'text', field: 'designation', label: 'Désignation'},
+                ],
+                {
+                    department_name: 'department',
+                    family_name: 'family',
+                    article: 'article',
+                    designation: 'designation',
                 }
-            },
-            grid2080: grid('2080'),
-            grid8020: grid('8020')
+            ),
+            grid2: grid(
+                '2',
+                "Achats non destinés à la revente: 601 602 604 605 606 608 609",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid3: grid(
+                '3',
+                "Achats (de marchandises) destinés à la revente: 607",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid4: grid(
+                '4',
+                "Prestation de services vendues 706",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid5: grid(
+                '5',
+                "Marchandises vendues: 707",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid6: grid(
+                '6',
+                "Sommes versées à des Tiers: 61 62",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid7: grid(
+                '7',
+                "Produits locaux: 601",
+                [],
+                [],
+                [],
+                {}
+            ),
+            grid8: grid(
+                '8',
+                "Produits locaux par produits: 601",
+                [],
+                [],
+                [],
+                {}
+            ),
+
         }
 
 
         let layout = new w2layout(config.layout);
         let sidebar = new w2sidebar(config.sidebar);
-        let grid2080 = new w2grid(config.grid2080);
-        let grid8020 = new w2grid(config.grid8020);
+
+        let grid1 = new w2grid(config.grid1);
+        let grid2 = new w2grid(config.grid2);
+        let grid3 = new w2grid(config.grid3);
+        let grid4 = new w2grid(config.grid4);
+        let grid5 = new w2grid(config.grid5);
+        let grid6 = new w2grid(config.grid6);
+        let grid7 = new w2grid(config.grid7);
+        let grid8 = new w2grid(config.grid8);
 
 
         layout.render('#main');
         layout.html('left', sidebar)
-        layout.html('main', grid2080)
+        layout.html('main', grid1)
 
         {#grid2080.localSearch()#}
         {#grid8020.localSearch()#}
 
-        window.showChanged = function (value) {
-            let target;
-            if (value === '2080') {
-                target = grid2080
-            } else if (value === '8020') {
-                target = grid8020
-            }
-            w2popup.open({
-                title: 'Historique ' + value,
-                with: 600,
-                height: 550,
-                body: `<pre>${JSON.stringify(target.getChanges(), null, 4)}</pre>`,
-                actions: {Ok: w2popup.close}
-            })
-        }
         window.showAlert = function (message) {
             w2alert(message)
                 .ok(() => {
                     console.log(message)
                 })
         }
+
+        sidebar.on('*', function (event) {
+            if (event.type === 'click') {
+                let grids;
+
+                switch (event.target) {
+                    case 2:
+                        grids = grid2
+                        break;
+                    case 3:
+                        grids = grid3
+                        break;
+                    case 4:
+                        grids = grid4
+                        break;
+                    case 5:
+                        grids = grid5
+                        break;
+                    case 6:
+                        grids = grid6
+                        break;
+                    case 7:
+                        grids = grid7
+                        break;
+                    case 8:
+                        grids = grid8
+                        break;
+                    case 'html':
+                         layout.html('main', '<div style="padding: 10px">Page de Synthèse</div>')
+                            query(layout.el('main')).removeClass('w2ui-grid').css('border-left', '1px solid #efefef')
+                        break
+                    default:
+                        grids = grid1
+                        break;
+                }
+                layout.html('main', grids)
+
+                {#console.log('Last Event: ' + event.type + ' Target: ' + event.target);#}
+                {#console.log(event);#}
+            }
+        })
 
     </script>
 {% endblock %}
