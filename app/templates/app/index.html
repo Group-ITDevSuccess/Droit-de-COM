@@ -118,6 +118,9 @@
                 case 8:
                     table = table8
                     break;
+                case 9:
+                    table = table9
+                    break;
                 default:
                     table = table1
                     break;
@@ -156,6 +159,7 @@
                             {id: '6', text: 'SVT', icon: 'fas fa-list-alt'},
                             {id: '7', text: 'PL', icon: 'fas fa-list-alt'},
                             {id: '8', text: 'PLP', icon: 'fas fa-list-alt'},
+                            {id: '9', text: 'DEB', icon: 'fas fa-list-alt'},
                         ],
                         onCollapse(event) {
                             event.preventDefault()
@@ -1332,6 +1336,175 @@
                 [],
                 []
             ),
+            table9: table(
+                '9',
+                "Débours: 467 468 (débit)",
+                [
+                    {
+                        field: 'NIF',
+                        text: 'NIF',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'STATISTIC',
+                        text: 'NUMERO STATISTIQUE',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'NATURE',
+                        text: 'NATURE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'REF',
+                        text: 'REFERENCE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'NIFONLINE',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'RAISON_SOCIAL',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '75px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMPTABILISE',
+                        text: 'COMPTABILISEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VERSEE',
+                        text: 'VERSEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {
+                        text: 'POUR LES FOURNISSEURS POSSEDANT UN NIFONLINE',
+                        span: 2,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {
+                        text: 'MONTANT HORS TVA DES SOMMES ',
+                        style: "background-color: #A5A5A5; color: #fff;",
+                        span: 3,
+                        frozen: true
+                    },
+                ],
+            ),
 
         }
 
@@ -1346,6 +1519,7 @@
         let table6 = new w2grid(config.table6);
         let table7 = new w2grid(config.table7);
         let table8 = new w2grid(config.table8);
+        let table9 = new w2grid(config.table9);
 
 
         layout.render('#main');
