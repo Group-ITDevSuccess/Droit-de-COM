@@ -5,8 +5,9 @@ from django import forms
 from app.models import Societe
 from utils import write_log
 
-societes = [('', '---')]  # Commencez par une liste vide
-societes.extend([(society.uid, society.name) for society in Societe.objects.filter(active__exact=True)])
+societes = [('', '---')]
+societes.extend(
+    [(society.uid, society.name) for society in Societe.objects.filter(active__exact=True)])
 
 
 class SearchForm(forms.Form):

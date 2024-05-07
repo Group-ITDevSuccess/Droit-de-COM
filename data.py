@@ -6,21 +6,16 @@ import pyodbc
 from utils import write_log
 
 
-def fetch_data_from_database(canevas, target, server, base, username, password):
+def fetch_data_from_database(canevas, target, types, server, base, username, password):
     try:
         # Charger le fichier de configuration JSON
         with open('config.json', 'r') as file:
             config_data = json.load(file)
 
-        # Vérifier si l'item existe dans le fichier de configuration
-        if canevas not in config_data:
-            return {'error': 'Item not found in config file'}
-
         # Convertir la chaîne JSON en objet Python
-        columns = config_data[canevas]['HEADER']
-        print("COLUMNS", columns)
+        columns = config_data['HEADER'][canevas]
 
-        sql_query = str(config_data[canevas]['SQL']).replace('{target}', target).replace('{base}', base)
+        sql_query = str(config_data['SQL'][types][canevas]).replace('{target}', target).replace('{base}', base)
 
         val = f"Driver={{ODBC Driver 17 for SQL Server}};Server={server};Database={base};UID={username};" \
               f"PWD={password}"

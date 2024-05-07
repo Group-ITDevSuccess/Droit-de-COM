@@ -21,6 +21,7 @@ class Societe(models.Model):
     base = models.CharField(max_length=150)
     table = models.CharField(max_length=150, null=True, default='')
     active = models.BooleanField(default=False)
+    type = models.CharField(choices=(('X3', 'X3'), ('SAGE100', 'SAGE100')), default='X3', max_length=10, null=True)
     connexion = models.ForeignKey(Connexion, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

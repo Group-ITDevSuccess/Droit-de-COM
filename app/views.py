@@ -51,12 +51,12 @@ def load_data(request):
     if uid != '' and target != '':
         offset = data.get('offset')
         canevas = data.get('canevas')
-        canevas = data.get('canevas')
         try:
             societe = Societe.objects.get(uid=uid)
             records = fetch_data_from_database(
                 canevas=canevas,
                 target=target,
+                types=societe.type,
                 server=societe.connexion.server,
                 base=societe.base,
                 username=societe.connexion.login,

@@ -5,7 +5,7 @@ from app.models import Connexion, Societe
 
 @admin.register(Societe)
 class SocieteAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value', 'base', 'active', 'created_at', 'updated_at')
+    list_display = ('name', 'value', 'base', 'active', 'type', 'created_at', 'updated_at')
     list_filter = ('active', 'created_at', 'updated_at')
     search_fields = ('name', 'value', 'base')
     readonly_fields = ('created_at', 'updated_at')
