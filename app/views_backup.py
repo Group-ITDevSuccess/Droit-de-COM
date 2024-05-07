@@ -43,15 +43,14 @@ def reverse_index(request, uid, target):
 @login_required
 @csrf_exempt
 def load_data(request):
+    data = request.POST
+
+    uid = data.get('uid')
+    target = data.get('target')
     records = []
-
-    try:
-        data = json.loads(request.GET.get('request'))
-        uid = data.get('uid')
-        target = data.get('target')
-
-        if uid != '' and target != '':
-            canevas = data.get('canevas')
+    if uid != '' and target != '':
+        canevas = data.get('canevas')
+        try:
             societe = Societe.objects.get(uid=uid)
             records = fetch_data_from_database(
                 canevas=canevas,
@@ -62,14 +61,12 @@ def load_data(request):
                 username=societe.connexion.login,
                 password=societe.connexion.password
             )
-
-    except Societe.DoesNotExist:
-        print("Societe Inexistant !")
-    except Exception as e:
-        write_log(str(e))
+        except Societe.DoesNotExist:
+            print("Societe Inexistant !")
+        except Exception as e:
+            write_log(str(e))
     return JsonResponse({
-        "total": len(records),
-        "records": records
+        "data": records
     }, safe=False)
 
 

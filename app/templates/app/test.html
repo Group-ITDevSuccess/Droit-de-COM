@@ -5,29 +5,30 @@
 {% block title %}Home{% endblock %}
 {% block style %}
     <link rel="stylesheet" type="text/css" href="{% static 'assets/w2ui/w2ui-2.0.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.ui.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/paramquery/themes/gray/pqgrid.css' %}">
 {% endblock %}
 {% block body %}
-    <main id="main" class="" style="width: 100vw; height: 90vh;"></main>
+    <main id="main" class="" style="width: 100vw; height: 85vh; "></main>
 {% endblock %}
 {% block script %}
-    <script src="{% static 'assets/paramquery/pqgrid.min.js' %}"></script>
-    <script src="{% static 'assets/paramquery/jsZip-2.5.0/jszip.min.js' %}"></script>
-    <script src="{% static 'assets/paramquery/jszip-utils-0.0.2/jszip-utils.min.js' %}"></script>
-    <script src="{% static 'assets/paramquery/localize/pq-localize-fr.js' %}"></script>
+    <script src="{% static 'dist/js/jquery.min.js' %}"></script>
     <script type="module">
         import {
-            w2layout,
-            w2sidebar,
-            w2alert,
             w2grid,
-            query,
-            w2utils
+            w2layout,
+            w2toolbar,
+            w2sidebar,
+            w2utils,
+            w2alert,
+            query
         } from "{% static 'assets/w2ui/w2ui-2.0.es6.min.js' %}";
 
-        function table(value, title, columns, columnsGroup) {
+        let semaineActuel = 16
+        let typeHebdo = [
+            {id: 1, text: 'Import'},
+            {id: 2, text: 'Local'},
+        ]
+
+        function grid(value, title, columns, columnsGroup, searchable) {
             return {
                 name: value,
                 dataType: 'JSON',
@@ -39,7 +40,7 @@
                 {#recid: 'uid',#}
                 method: 'GET',
                 limit: 10000,
-                {#autoLoad: true,#}
+                autoLoad: true,
                 advanceOnEdit: true,
                 liveSearch: true,
                 multiSearch: true,
@@ -52,6 +53,7 @@
                 msgNeedReload: 'Reload Nécessaire...',
                 msgRefresh: 'Rafraichissement...',
                 msgServerError: 'Erreur Serveur !',
+                {#sortData: [{field: 'department_name', direction: 'asc'}],#}
                 buttons: {
                     'reload': {
                         type: 'button',
@@ -77,53 +79,43 @@
                     searchHiddenMsg: true,
                     searchLogic: true,
                     searchSave: true,
+                    skipRecords: true,
                     toolbarColumns: true,
                     statusRange: true,
                     statusBuffered: true,
                     statusRecordID: true,
                     statusSelection: true,
                     statusResponse: true,
+                    statusSearch: true,
                 },
-                {#columnTooltip: 'bottom',#}
+                operatorsMap: {
+                    'text': 'text',
+                    'int': 'number',
+                    'float': 'number',
+                    'money': 'number',
+                    'currency': 'number',
+                    'percent': 'number',
+                    'hex': 'hex',
+                    'alphanumeric': 'text',
+                    'color': 'color',
+                    'date': 'date',
+                    'time': 'date',
+                    'datetime': 'date',
+                    'list': 'list',
+                    'combo': 'text',
+                    'enum': 'enum',
+                    'file': 'enum',
+                    'select': 'list',
+                    'radio': 'list',
+                    'checkbox': 'list',
+                    'toggle': 'list'
+                },
+                columnTooltip: 'bottom',
                 tooltip: w2utils.locale('{% static 'assets/w2ui/locale/fr-fr.json' %}'),
+                searches: searchable,
                 columnGroups: columnsGroup,
                 columns: columns,
             }
-        }
-
-        let configTable = function (event) {
-            let table;
-            switch (event.target) {
-                case 1:
-                    table = table1
-                    break;
-                case 2:
-                    table = table2
-                    break;
-                case 3:
-                    table = table3
-                    break;
-                case 4:
-                    table = table4
-                    break;
-                case 5:
-                    table = table5
-                    break;
-                case 6:
-                    table = table6
-                    break;
-                case 7:
-                    table = table7
-                    break;
-                case 8:
-                    table = table8
-                    break;
-                default:
-                    table = table1
-                    break;
-
-            }
-            return table
         }
 
         let config = {
@@ -156,52 +148,33 @@
                             {id: '6', text: 'SVT', icon: 'fas fa-list-alt'},
                             {id: '7', text: 'PL', icon: 'fas fa-list-alt'},
                             {id: '8', text: 'PLP', icon: 'fas fa-list-alt'},
+                            {id: 'html', text: 'Synthèse', icon: 'fas fa-list-alt'},
                         ],
                         onCollapse(event) {
                             event.preventDefault()
-                        },
-
+                        }
                     }
                 ],
                 onFlat(event) {
                     layout.sizeTo('left', (event.detail.goFlat ? 35 : 100), true)
                 },
-                onRender(event) {
-                    let table = configTable(event)
-                    layout.html('main', table)
-                    table.load("{% url 'app:load_data' %}")
-                },
-                onClick(event) {
-                    let table = configTable(event)
-                    layout.html('main', table)
-                    table.load("{% url 'app:load_data' %}")
-                }
             },
-            table1: table(
+            grid1: grid(
                 '1',
                 "Achats Immobilisés: 203 204 205 207 208/ 211 212 213 215 218",
                 [
                     {
-                        field: 'NUM',
-                        text: 'COMPTE GENERAL',
+                        field: 'cin',
+                        text: 'CIN',
                         sortable: true,
                         size: '120px',
                         resizable: true,
                         frozen: true,
                         searchable: {operator: 'contains'},
-                        clipboardCopy: "Copier le N° Compte General"
-                    }, {
-                    field: 'CIN',
-                    text: 'CIN',
-                    sortable: true,
-                    size: '120px',
-                    resizable: true,
-                    frozen: true,
-                    searchable: {operator: 'contains'},
-                    clipboardCopy: "Copier le N° CIN"
-                },
+                        clipboardCopy: "Copier le N° CIN"
+                    },
                     {
-                        field: 'DATE_CIN',
+                        field: 'date_cin',
                         text: 'Date CIN',
                         sortable: true,
                         size: '120px',
@@ -210,7 +183,7 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'DELIVERANCE',
+                        field: 'deliverance',
                         text: 'LIEU DE DELIVRANCE CIN',
                         sortable: true,
                         size: '120px',
@@ -219,7 +192,7 @@
                         searchable: {operator: 'contains'},
                     },
                     {
-                        field: 'NATURE',
+                        field: 'nature',
                         text: 'NATURE',
                         size: '75px',
                         sortable: true,
@@ -228,7 +201,7 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'REF',
+                        field: 'reference',
                         text: 'REFERENCE',
                         size: '100px',
                         sortable: true,
@@ -237,7 +210,7 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'NIF',
+                        field: 'nifonline',
                         text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
                         size: '100px',
                         sortable: true,
@@ -246,7 +219,7 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'RAISON_SOCIAL',
+                        field: 'raison',
                         text: 'RAISON SOCIALE / NOM COMMERCIAL',
                         size: '150px',
                         sortable: true,
@@ -255,7 +228,7 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'ADRESSE',
+                        field: 'address',
                         text: 'ADRESSE',
                         size: '150px',
                         sortable: true,
@@ -264,15 +237,16 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'VILLE',
+                        field: 'ville',
                         text: 'VILLE',
+                        size: '125px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'EX_PROVINCE',
+                        field: 'ex_province',
                         text: 'EX-PROVINCE',
                         size: '150px',
                         sortable: true,
@@ -281,35 +255,36 @@
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'PAYS',
+                        field: 'pays',
                         text: 'PAYS',
-                        size: '50px',
+                        size: '150px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'DESIGNATION',
+                        field: 'nature',
                         text: 'NATURE DES ACHATS IMMOBILISES',
+                        size: '75px',
                         sortable: true,
                         resizable: true,
-                        size: '175px',
                         frozen: true,
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'COMPTABILISE',
+                        field: 'comptability',
                         text: 'COMPTABILISEES',
+                        size: '150px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
-                        render: 'money',
                         searchable: {operator: 'contains'}
                     },
                     {
-                        field: 'VERSEE',
+                        field: 'versee',
                         text: 'VERSEES',
+                        size: '150px',
                         sortable: true,
                         resizable: true,
                         frozen: true,
@@ -318,7 +293,6 @@
                     },
                 ],
                 [
-                    {text: '', main: true},
                     {
                         text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
                         span: 3,
@@ -341,46 +315,59 @@
                         frozen: true
                     },
                 ],
+                [
+                    {type: 'text', field: 'department_name', label: 'Département'},
+                    {type: 'text', field: 'family_name', label: 'Famille'},
+                    {type: 'text', field: 'article', label: 'Article'},
+                    {type: 'text', field: 'designation', label: 'Désignation'},
+                ]
             ),
-            table2: table(
+            grid2: grid(
                 '2',
                 "Achats non destinés à la revente: 601 602 604 605 606 608 609",
                 [],
+                [],
                 []
             ),
-            table3: table(
+            grid3: grid(
                 '3',
                 "Achats (de marchandises) destinés à la revente: 607",
                 [],
+                [],
                 []
             ),
-            table4: table(
+            grid4: grid(
                 '4',
                 "Prestation de services vendues 706",
                 [],
+                [],
                 []
             ),
-            table5: table(
+            grid5: grid(
                 '5',
                 "Marchandises vendues: 707",
                 [],
+                [],
                 []
             ),
-            table6: table(
+            grid6: grid(
                 '6',
                 "Sommes versées à des Tiers: 61 62",
                 [],
-                []
-            ),
-            table7: table(
-                '7',
-                "Produits locaux: 601",
                 [],
                 []
             ),
-            table8: table(
+            grid7: grid(
+                '7',
+                "Produits locaux: 601",
+                [],
+                [],
+                []
+            ),
+            grid8: grid(
                 '8',
                 "Produits locaux par produits: 601",
+                [],
                 [],
                 []
             ),
@@ -390,20 +377,24 @@
 
         let layout = new w2layout(config.layout);
         let sidebar = new w2sidebar(config.sidebar);
-        let table1 = new w2grid(config.table1);
-        let table2 = new w2grid(config.table2);
-        let table3 = new w2grid(config.table3);
-        let table4 = new w2grid(config.table4);
-        let table5 = new w2grid(config.table5);
-        let table6 = new w2grid(config.table6);
-        let table7 = new w2grid(config.table7);
-        let table8 = new w2grid(config.table8);
+
+        let grid1 = new w2grid(config.grid1);
+        let grid2 = new w2grid(config.grid2);
+        let grid3 = new w2grid(config.grid3);
+        let grid4 = new w2grid(config.grid4);
+        let grid5 = new w2grid(config.grid5);
+        let grid6 = new w2grid(config.grid6);
+        let grid7 = new w2grid(config.grid7);
+        let grid8 = new w2grid(config.grid8);
 
 
         layout.render('#main');
         layout.html('left', sidebar)
         layout.html('top', toolbar)
+        layout.html('main', grid1)
 
+        {#grid2080.localSearch()#}
+        {#grid8020.localSearch()#}
 
         window.showAlert = function (message) {
             w2alert(message)
@@ -411,6 +402,53 @@
                     console.log(message)
                 })
         }
+
+        let grids;
+
+        sidebar.on('*', function (event) {
+            if (event.type === 'click') {
+
+                switch (event.target) {
+                    case 1:
+                        grids = grid1
+                        break;
+                    case 2:
+                        grids = grid2
+                        break;
+                    case 3:
+                        grids = grid3
+                        break;
+                    case 4:
+                        grids = grid4
+                        break;
+                    case 5:
+                        grids = grid5
+                        break;
+                    case 6:
+                        grids = grid6
+                        break;
+                    case 7:
+                        grids = grid7
+                        break;
+                    case 8:
+                        grids = grid8
+                        break;
+                    case 'html':
+                        layout.html('main', '<div style="padding: 10px">Page de Synthèse</div>')
+                        query(layout.el('main')).removeClass('w2ui-grid').css('border-left', '1px solid #efefef')
+                        break
+                    default:
+                        grids = grid1
+                        break;
+                }
+                console.log(event)
+                layout.html('main', grids)
+                grids.load("{% url 'app:load_data' %}")
+                {#console.log('Last Event: ' + event.type + ' Target: ' + event.target);#}
+                {#console.log(event);#}
+            }
+        })
+        grid1.load("{% url 'app:load_data' %}")
 
 
         document.addEventListener('DOMContentLoaded', function () {
