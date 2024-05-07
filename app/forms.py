@@ -7,7 +7,7 @@ from utils import write_log
 
 societes = [('', '---')]
 societes.extend(
-    [(society.uid, society.name) for society in Societe.objects.filter(active__exact=True)])
+    [(society.uid, society.name) for society in Societe.objects.filter(active=True)])
 
 
 class SearchForm(forms.Form):

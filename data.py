@@ -33,7 +33,7 @@ def fetch_data_from_database(canevas, target, types, societe):
                 rows = [tuple(row) for row in rows]
                 if all(isinstance(row, tuple) for row in rows):
                     df = pd.DataFrame(rows, columns=columns)
-                    df = df.applymap(lambda x: float(x) if isinstance(x, Decimal) else x)
+                    df = df.apply(lambda x: float(x) if isinstance(x, Decimal) else x)
                     result = df.to_dict(orient='records')
         return result
     except FileNotFoundError:

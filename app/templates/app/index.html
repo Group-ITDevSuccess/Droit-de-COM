@@ -506,32 +506,825 @@
             table3: table(
                 '3',
                 "Achats (de marchandises) destinés à la revente: 607",
-                [],
-                []
+                [
+                    {
+                        field: 'NUM',
+                        text: 'COMPTE GENERAL',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'NATURE',
+                        text: 'NATURE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'REF',
+                        text: 'REFERENCE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'NIF',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'RAISON_SOCIAL',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '150px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        sortable: true,
+                        resizable: true,
+                        size: '125px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        resizable: true,
+                        size: '75px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '50px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMPTABILISE',
+                        text: 'COMPTABILISEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VERSEE',
+                        text: 'VERSEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {text: '', main: true},
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {
+                        text: 'MONTANT HORS TVA DES SOMMES ',
+                        style: "background-color: #A5A5A5; color: #fff;",
+                        span: 2,
+                        frozen: true
+                    },
+                ],
             ),
             table4: table(
                 '4',
                 "Prestation de services vendues 706",
-                [],
-                []
+                [
+                    {
+                        field: 'NIF',
+                        text: 'NIF',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'STATISTIC',
+                        text: 'NUMERO STATISTIQUE',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'NATURE',
+                        text: 'NATURE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'REF',
+                        text: 'REFERENCE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'NIFONLINE',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'RAISON_SOCIAL',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMMERCIAL',
+                        text: 'NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '75px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'MODE',
+                        text: 'MODE DE PAIEMENT',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'MONTANT',
+                        text: 'MONTANT HORS TVA',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'TVA',
+                        text: 'TVA',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {
+                        text: 'POUR LES FOURNISSEURS POSSEDANT UN NIFONLINE',
+                        span: 2,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                ],
             ),
             table5: table(
                 '5',
                 "Marchandises vendues: 707",
-                [],
-                []
+                [
+                    {
+                        field: 'NIF',
+                        text: 'NIF',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'STATISTIC',
+                        text: 'NUMERO STATISTIQUE',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'NATURE',
+                        text: 'NATURE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'REF',
+                        text: 'REFERENCE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'NIFONLINE',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'RAISON_SOCIAL',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMMERCIAL',
+                        text: 'NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '75px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'MODE',
+                        text: 'MODE DE PAIEMENT',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'MONTANT',
+                        text: 'MONTANT HORS TVA',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'TVA',
+                        text: 'TVA',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {
+                        text: 'POUR LES FOURNISSEURS POSSEDANT UN NIFONLINE',
+                        span: 2,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                ],
             ),
             table6: table(
                 '6',
                 "Sommes versées à des Tiers: 61 62",
-                [],
-                []
+                [
+                    {
+                        field: 'NIF',
+                        text: 'NIF',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'STATISTIC',
+                        text: 'NUMERO STATISTIQUE',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        resizable: true,
+                        size: '100px',
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'NATURE',
+                        text: 'NATURE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'REF',
+                        text: 'REFERENCE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'NIFONLINE',
+                        text: 'NIFONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'RAISON_SOCIAL',
+                        text: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        size: '100px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '75px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMPTABILISE',
+                        text: 'COMPTABILISEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VERSEE',
+                        text: 'VERSEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {
+                        text: 'POUR LES FOURNISSEURS POSSEDANT UN NIFONLINE',
+                        span: 2,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                    },
+                    {text: 'AUTRE', style: "background-color: #FFC000; color: #fff;", span: 2,},
+                    {
+                        text: 'POUR LES FOURNISSEURS ETRANGERS',
+                        style: "background-color: #FFC000; color: #fff;",
+                        span: 1,
+                    },
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {
+                        text: 'MONTANT HORS TVA DES SOMMES ',
+                        style: "background-color: #A5A5A5; color: #fff;",
+                        span: 3,
+                        frozen: true
+                    },
+                ],
             ),
             table7: table(
                 '7',
                 "Produits locaux: 601",
-                [],
-                []
+                [
+                    {
+                        field: 'NIF',
+                        text: 'NIF',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'STATISTIC',
+                        text: 'NUMERO STATISTIQUE',
+                        sortable: true,
+                        size: '120px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° Compte General"
+                    },
+                    {
+                        field: 'CIN',
+                        text: 'CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                        clipboardCopy: "Copier le N° CIN"
+                    },
+                    {
+                        field: 'DATE_CIN',
+                        text: 'Date CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DELIVERANCE',
+                        text: 'LIEU DE DELIVRANCE CIN',
+                        sortable: true,
+                        size: '100px',
+                        resizable: true,
+                        frozen: true,
+                        searchable: {operator: 'contains'},
+                    },
+                    {
+                        field: 'ADRESSE',
+                        text: 'ADRESSE',
+                        size: '175px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VILLE',
+                        text: 'VILLE',
+                        sortable: true,
+                        resizable: true,
+                        size: '125px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'EX_PROVINCE',
+                        text: 'EX-PROVINCE',
+                        sortable: true,
+                        resizable: true,
+                        size: '75px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'PAYS',
+                        text: 'PAYS',
+                        size: '50px',
+                        sortable: true,
+                        resizable: true,
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'DESIGNATION',
+                        text: 'NATURE DES ACHATS IMMOBILISES',
+                        sortable: true,
+                        resizable: true,
+                        size: '175px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'COMPTABILISE',
+                        text: 'COMPTABILISEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                    {
+                        field: 'VERSEE',
+                        text: 'VERSEES',
+                        sortable: true,
+                        resizable: true,
+                        render: 'money',
+                        size: '100px',
+                        searchable: {operator: 'contains'}
+                    },
+                ],
+                [
+                    {
+                        text: 'POUR LES PRESTATAIRES POSSEDANT UN NIFONLINE',
+                        span: 2,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },{
+                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        span: 3,
+                        style: "background-color: green; color: #fff",
+                        frozen: true
+                    },
+                    {text: '', main: true},
+                    {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                    {text: '', main: true},
+                ],
             ),
             table8: table(
                 '8',
