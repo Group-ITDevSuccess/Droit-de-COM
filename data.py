@@ -6,7 +6,7 @@ from utils import write_log
 from decimal import Decimal
 
 
-def fetch_data_from_database(canevas, target, types, server, base, username, password):
+def fetch_data_from_database(canevas, target, types, societe):
     try:
         # Charger le fichier de configuration JSON
         with open('config.json', 'r') as file:
@@ -15,10 +15,15 @@ def fetch_data_from_database(canevas, target, types, server, base, username, pas
         # Convertir la chaîne JSON en objet Python
         columns = config_data['HEADER'][canevas]
 
-        sql_query = str(config_data['SQL'][types][canevas]).replace('{target}', target).replace('{base}', base)
+        sql_query = (str(config_data['SQL'][types][canevas])
+                     .replace('{target}', target)
+                     .replace('{value}', societe.value)
+                     .replace('{base}', societe.base)
+                     .replace('{table}', societe.table)
+                     )
 
-        val = f"Driver={{ODBC Driver 17 for SQL Server}};Server={server};Database={base};UID={username};" \
-              f"PWD={password}"
+        val = f"Driver={{ODBC Driver 17 for SQL Server}};Server={societe.connexion.server};" \
+              f"Database={societe.base};UID={societe.connexion.login};PWD={societe.connexion.password}"
         connection = pyodbc.connect(val)
         result = []
         with connection.cursor() as cursor:

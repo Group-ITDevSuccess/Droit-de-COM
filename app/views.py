@@ -57,10 +57,7 @@ def load_data(request):
                 canevas=canevas,
                 target=target,
                 types=societe.type,
-                server=societe.connexion.server,
-                base=societe.base,
-                username=societe.connexion.login,
-                password=societe.connexion.password
+                societe=societe,
             )
 
     except Societe.DoesNotExist:
