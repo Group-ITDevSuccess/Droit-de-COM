@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% block title %}Home{% endblock %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/w2ui/w2ui-2.0.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/paramquery/themes/gray/pqgrid.css' %}">
+{% endblock %}
+{% block body %}
+    <main id="main" class="" style="width: 100vw; height: 90vh;"></main>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'assets/paramquery/pqgrid.min.js' %}"></script>
+    <script src="{% static 'assets/paramquery/jsZip-2.5.0/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/paramquery/jszip-utils-0.0.2/jszip-utils.min.js' %}"></script>
+    <script src="{% static 'assets/paramquery/localize/pq-localize-fr.js' %}"></script>
+    <script type="module">
+        import {
+            w2layout,
+            w2sidebar,
+            w2alert
+        } from "{% static 'assets/w2ui/w2ui-2.0.es6.min.js' %}";
+
+
+        let body = function (id, table) {
+            layout.html('main', `<div id='${id}' style="padding: 10px; width: 100vw; height: 85vh; margin: 4px; auto"></div>`)
+            let canevas = id
+            if (id === 'sidebar') {
+                canevas = '1'
+            }
+            $(function () {
+                let obj = {
+                    height: '100vh',
+                    fillHandle: 'horizontal',
+                    showTitle: true,
+                    virtualX: true,
+                    virtualY: true,
+                    collapsible: true,
+                    freezeCols: 4,
+                    showBottom: false,
+                    filterModel: {on: true, header: true, type: "local"},
+                    wrap: true,
+                    hwrap: false,
+                    sortModel: {space: true},
+                    scrollModel: {autoResize: true, theme: true},
+                    numberCell: {resizable: true, width: 30, title: "#"},
+                    resizable: true,
+                    selectionModel: {column: true, swipe: true},
+                    toolbar: {
+                        items: [{
+                            type: 'checkbox',
+                            label: 'zip',
+                            attr: 'id="export_zip"'
+                        },
+                            {
+                                type: 'textbox',
+                                label: ' ',
+                                cls: 'form-control form-sm',
+                                attr: 'id="export_filename" placeholder="Enter filename"'
+                            },
+                            {
+                                type: 'select',
+                                label: 'Format: ',
+                                attr: 'id="export_format"',
+                                options: [{xlsx: 'Excel', csv: 'Csv', htm: 'Html', json: 'Json'}]
+                            },
+                            {
+                                type: 'button',
+                                label: "Export",
+                                cls: 'btn btn-success btn-sm',
+                                icon: 'ui-icon-arrowthickstop-1-s',
+                                listener: function () {
+                                    this.exportData({
+                                        url: "{% url  'app:export_data' %}",
+                                        format: $("#export_format").val(),
+                                        zip: $("#export_zip").prop("checked"),
+                                        filename: $("#export_filename").val(),
+                                        render: true
+                                    });
+                                }
+                            }]
+                    },
+                    dataModel: {
+                        method: "POST",
+                        location: "remote",
+                        dataType: "JSON",
+                        getUrl: function () {
+                            let url = "{% url 'app:load_data' %}";
+                            let data = {
+                                uid: '{{ uid }}',
+                                target: '{{ target }}',
+                                canevas: canevas
+                            };
+
+                            return {url, data};
+                        },
+                        getData: function (dataJSON) {
+                            return {
+                                data: dataJSON.data,
+                            };
+                        },
+                    },
+                    colModel: table.colModel,
+                    {#scrollModel: {autoFit: true, autoResize: true, theme: true},#}
+
+                }
+                obj.title = table.title
+                let grid = pq.grid('#' + id, obj);
+
+            })
+        }
+
+        let configTable = function (event) {
+            let table;
+            switch (event.target) {
+                case 1:
+                    table = config.table1
+                    break;
+                case 2:
+                    table = config.table2
+                    break;
+                case 3:
+                    table = config.table3
+                    break;
+                case 4:
+                    table = config.table4
+                    break;
+                case 5:
+                    table = config.table5
+                    break;
+                case 6:
+                    table = config.table6
+                    break;
+                case 7:
+                    table = config.table7
+                    break;
+                case 8:
+                    table = config.table8
+                    break;
+                default:
+                    table = config.table1
+                    break;
+
+            }
+            return table
+
+        }
+
+        let config = {
+            layout: {
+                name: 'layout',
+                overflow: 'auto',
+                resizable: false,
+                padding: 0,
+                panels: [
+                    {type: 'left', size: 100, resizable: true, minSize: 35},
+                    {type: 'main', size: 550, overflow: 'hidden'}
+                ]
+            },
+            sidebar: {
+                name: 'sidebar',
+                flatButton: true,
+                nodes: [
+                    {
+                        id: 'general',
+                        text: 'General',
+                        group: true,
+                        expanded: true,
+                        groupShowHide: false,
+                        nodes: [
+                            {id: '1', text: 'AI', icon: 'fas fa-list-alt', selected: true},
+                            {id: '2', text: 'ANDR', icon: 'fas fa-list-alt'},
+                            {id: '3', text: 'ADR', icon: 'fas fa-list-alt'},
+                            {id: '4', text: 'PSV', icon: 'fas fa-list-alt'},
+                            {id: '5', text: 'MV', icon: 'fas fa-list-alt'},
+                            {id: '6', text: 'SVT', icon: 'fas fa-list-alt'},
+                            {id: '7', text: 'PL', icon: 'fas fa-list-alt'},
+                            {id: '8', text: 'PLP', icon: 'fas fa-list-alt'},
+                        ],
+                        onCollapse(event) {
+                            event.preventDefault()
+                        },
+
+                    }
+                ],
+                onFlat(event) {
+                    layout.sizeTo('left', (event.detail.goFlat ? 35 : 100), true)
+                },
+                onRender(event) {
+                    let table = configTable(event)
+                    body(event.target, table)
+                },
+                onClick(event) {
+                    let table = configTable(event)
+                    body(event.target, table)
+                }
+            },
+            table1: {
+                title: "Achats Immobilisés: 203 204 205 207 208/ 211 212 213 215 218",
+                colModel: [
+                    {
+                        title: 'COMPTE GENERAL',
+                        dataType: 'string',
+                        dataIndx: 'NUM',
+                        editable: false,
+                        width: 100,
+                        filter: {type: 'textbox', condition: 'begin', listeners: ['keyup']}
+                    },
+                    {
+                        title: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                        align: "center",
+                        colModel: [
+                            {title: 'CIN', dataType: 'integer', width: 100, dataIndx: 'CIN', editable: false,},
+                            {title: 'DATE CIN', dataType: 'date', width: 100, dataIndx: 'DATE_CIN', editable: false,},
+                            {
+                                title: 'LIEU DE DELIVRANCE CIN',
+                                dataType: 'date', width: 100,
+                                dataIndx: 'DELIVERANCE',
+                                editable: false,
+                            },
+                        ]
+                    },
+                    {
+                        title: 'AUTRE', align: "center", width: 100,
+                        colModel: [
+                            {
+                                title: 'NATURE',
+                                dataType: 'string',
+                                dataIndx: 'NATURE', width: 180,
+                                editable: false,
+                                filter: {type: 'textbox', condition: 'begin', listeners: ['keyup']}
+                            },
+                            {
+                                title: 'REFERENCE',
+                                dataType: 'string', width: 100,
+                                dataIndx: 'REF',
+                                editable: false,
+                                filter: {type: 'textbox', condition: 'begin', listeners: ['keyup']}
+                            },
+                        ]
+                    },
+                    {
+                        title: 'POUR LES FOURNISSEURS ETRANGERS', colModel: [
+                            {
+                                title: 'NIF ONLINE DU REPRESENTANT ACCREDITE AUPRES DU MFB SINON VIDE',
+                                dataType: 'string', width: 100,
+                                dataIndx: 'NIF',
+                                editable: false, filter: {type: 'textbox', condition: 'begin', listeners: ['keyup']}
+                            },
+                        ]
+                    },
+                    {
+                        title: 'RAISON SOCIALE / NOM COMMERCIAL',
+                        dataType: 'string',
+                        align: "center",
+                        dataIndx: 'RAISON', width: 100,
+                        editable: false, filter: {type: 'textbox', condition: 'begin', listeners: ['keyup']}
+                    },
+                    {
+                        title: 'ADRESSE COMPLETE', align: "center", colModel: [
+                            {title: 'ADRESSE', dataType: 'string', width: 180, dataIndx: 'ADRESSE', editable: false,},
+                            {
+                                title: 'VILLE',
+                                dataType: 'string',
+                                width: 110,
+                                dataIndx: 'VILLE',
+                                editable: false,
+                                filter: {
+                                    type: "select",
+                                    condition: 'equal',
+                                    prepend: {'': '--Select--'},
+                                    valueIndx: "VILLE",
+                                    labelIndx: "VILLE",
+                                    listeners: ['change']
+                                },
+                            },
+                            {
+                                title: 'EX-PROVINCE',
+                                dataType: 'string',
+                                width: 100,
+                                dataIndx: 'EX_PROVINCE',
+                                editable: false,
+                            },
+                            {
+                                title: 'PAYS', dataIndx: 'PAYS', editable: false, width: 75, filter: {
+                                    type: "select",
+                                    condition: 'equal',
+                                    prepend: {'': '--Select--'},
+                                    valueIndx: "PAYS",
+                                    labelIndx: "PAYS",
+                                    listeners: ['change']
+                                },
+                            },
+                        ]
+                    },
+                    {
+                        title: 'NATURE DES ACHATS IMMOBILISES',
+                        dataType: 'string',
+                        width: 180,
+                        dataIndx: 'DESIGNATION',
+                        flex: {one: true},
+                        editable: false,
+                    },
+                    {
+                        title: 'MONTANT HORS TVA DES SOMMES', align: "center", colModel: [
+                            {
+                                title: 'COMPTABILISEES',
+                                dataType: 'float',
+                                dataIndx: 'COMPTABILISE',
+                                editable: false,
+                                format: '## ###,00',
+                                width: 100,
+                                align: "right",
+                                summary: {type: "sum"},
+                            },
+                            {
+                                title: 'VERSEES',
+                                dataType: 'float',
+                                format: '## ###,00',
+                                dataIndx: 'VERSET',
+                                editable: false,
+                                width: 100,
+                                align: "right",
+                                summary: {type: "sum"},
+                            },
+                        ]
+                    },
+                ],
+            },
+            table2: {},
+            table3: {},
+            table4: {},
+            table5: {},
+            table6: {},
+            table7: {},
+            table8: {},
+
+        }
+
+
+        let layout = new w2layout(config.layout);
+        let sidebar = new w2sidebar(config.sidebar);
+
+
+        layout.render('#main');
+        layout.html('left', sidebar)
+        layout.html('top', toolbar)
+
+
+        window.showAlert = function (message) {
+            w2alert(message)
+                .ok(() => {
+                    console.log(message)
+                })
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const societeField = document.querySelector('#id_societe');
+            const targetField = document.querySelector('#id_target');
+            const form = document.querySelector('#FormSearch');
+
+            societeField.addEventListener('change', handleFormChange);
+            targetField.addEventListener('change', handleFormChange);
+
+            function handleFormChange() {
+                if (societeField.value && targetField.value) {
+                    form.submit();
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}
