@@ -7,10 +7,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/w2ui/w2ui-2.0.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/paramquery/pqgrid.ui.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/paramquery/themes/rosybrown/pqgrid.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/paramquery/themes/gray/pqgrid.css' %}">
 {% endblock %}
 {% block body %}
-    <main id="main" class="" style="width: 100vw; height: 85vh;"></main>
+    <main id="main" class="" style="width: 100vw; height: 90vh;"></main>
 {% endblock %}
 {% block script %}
     <script src="{% static 'assets/paramquery/pqgrid.min.js' %}"></script>
@@ -40,12 +40,15 @@
                     virtualY: true,
                     collapsible: true,
                     freezeCols: 4,
-                    showBottom: true,
+                    showBottom: false,
                     filterModel: {on: true, header: true, type: "local"},
                     wrap: true,
                     hwrap: false,
                     sortModel: {space: true},
-                    selectionModel: {column: true, swipe: false},
+                    scrollModel: {autoResize: true, theme: true},
+                    numberCell: {resizable: true, width: 30, title: "#"},
+                    resizable: true,
+                    selectionModel: {column: true, swipe: true},
                     toolbar: {
                         items: [{
                             type: 'checkbox',
@@ -100,11 +103,8 @@
                             };
                         },
                     },
-                    {#scrollModel: {autoFit: true, autoResize: true, theme: true},#}
-                    scrollModel: {autoResize: true, theme: true},
-                    numberCell: {resizable: true, width: 30, title: "#"},
-                    resizable: true,
                     colModel: table.colModel,
+                    {#scrollModel: {autoFit: true, autoResize: true, theme: true},#}
 
                 }
                 obj.title = table.title
