@@ -1,6 +1,7 @@
 import json
 import os
 import smtplib
+from datetime import datetime
 
 import pandas as pd
 import pyodbc
@@ -44,7 +45,7 @@ def fetch_data_from_database(canevas, target, types, societe):
                     df = df.apply(lambda x: float(x) if isinstance(x, Decimal) else x)
                     records = df.to_dict(orient='records')
                     result['status'] = 'success'
-                    result['message'] = 'Donnée Générer avec Succcess !'
+                    result['message'] = 'Donnée Générer avec Success !'
                     result['total'] = len(records)
                     result['records'] = records
 
@@ -185,10 +186,10 @@ def custom_send_email(target, recipient_email, copie_email, attachment_filename,
                 json_file = json.load(file)
 
             objet_text = json_file['CONFIGURATION']['OBJET']
-            message_text = message_text + """\n\n
-============= Mail Automatique ====================\n               
-            www.inviso-group.com\n          
-============= Sage X3 - {date} ====================\n
+            message_text = message_text + f"""\n\n
+============= Mail Automatique ====================               
+            www.inviso-group.com          
+============= Sage X3 - {datetime.today().strftime('%d/%m/%Y %H:%M:%S')} ===================
 """
 
             message = EmailMessage()
@@ -198,7 +199,6 @@ def custom_send_email(target, recipient_email, copie_email, attachment_filename,
             message["Cc"] = copie_email
             message.set_content(message_text)
 
-            # Vérifier les autorisations avant d'ajouter l'attachement
             if os.access(attachment_filename, os.R_OK):
                 with open(attachment_filename, "rb") as file:
                     content = file.read()

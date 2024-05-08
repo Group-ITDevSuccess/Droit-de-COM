@@ -28,3 +28,18 @@ class Societe(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class History(models.Model):
+    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    societe = models.CharField(max_length=100)
+    target = models.CharField(max_length=100, null=True)
+    destinataire = models.TextField()
+    copie = models.TextField(blank=True, null=True)
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.societe

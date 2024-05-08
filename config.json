@@ -15,9 +15,9 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "STATUS",
-      "MODE",
-      "NUM"
+      "LETTTRE",
+      "LETTRAGE",
+      "PIECE"
     ],
     "2": [
       "NIF",
@@ -36,9 +36,9 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "STATUS",
-      "MODE",
-      "NUM"
+      "LETTTRE",
+      "LETTRAGE",
+      "PIECE"
     ],
     "3": [
       "CIN",
@@ -55,9 +55,9 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "STATUS",
-      "MODE",
-      "NUM"
+      "LETTTRE",
+      "LETTRAGE",
+      "PIECE"
     ],
     "4": [
       "NIF",
@@ -74,11 +74,11 @@
       "VILLE",
       "EX_PROVINCE",
       "PAYS",
-      "MODE",
+      "LETTRAGE",
       "DESIGNATION",
       "MONTANT",
       "TVA",
-      "NUM"
+      "PIECE"
     ],
     "5": [
       "NIF",
@@ -95,11 +95,11 @@
       "VILLE",
       "EX_PROVINCE",
       "PAYS",
-      "MODE",
+      "LETTRAGE",
       "DESIGNATION",
       "MONTANT",
       "TVA",
-      "NUM"
+      "PIECE"
     ],
     "6": [
       "NIF",
@@ -118,9 +118,9 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "STATUS",
-      "MODE",
-      "NUM"
+      "LETTTRE",
+      "LETTRAGE",
+      "PIECE"
     ],
     "7": [
       "NIF",
@@ -136,7 +136,7 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "NUM"
+      "PIECE"
     ],
     "8": [],
     "9": [
@@ -156,9 +156,9 @@
       "DESIGNATION",
       "COMPTABILISE",
       "VERSEE",
-      "STATUS",
-      "MODE",
-      "NUM"
+      "LETTTRE",
+      "LETTRAGE",
+      "PIECE"
     ]
   },
   "SQL": {

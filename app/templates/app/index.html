@@ -132,11 +132,15 @@
             }
             table.toolbar = {
                 items: [
-                    {type: 'button', id: 'showChanges', icon: 'fas fa-registered', text: 'Enregistrer'}
+                    {type: 'button', id: 'showHistory', icon: 'fas fa-hostory', text: 'Historique'},
+                    {type: 'button', id: 'showRegister', icon: 'fas fa-registered', text: 'Enregistrer'}
                 ],
                 onClick(event) {
-                    if (event.target === 'showChanges') {
-                        showChanged()
+                    if (event.target === 'showRegister') {
+                        showRegister()
+                    }
+                    if (event.target === 'showHistory') {
+                        showHistory()
                     }
                 }
             };
@@ -199,16 +203,7 @@
                 '1',
                 "Achats Immobilisés: 203 204 205 207 208/ 211 212 213 215 218",
                 [
-                    {
-                        field: 'NUM',
-                        text: 'COMPTE GENERAL',
-                        sortable: true,
-                        size: '120px',
-                        resizable: true,
-                        frozen: true,
-                        searchable: {operator: 'contains'},
-                        clipboardCopy: "Copier le N° Compte General"
-                    },
+
                     {
                         field: 'CIN',
                         text: 'CIN',
@@ -329,7 +324,6 @@
                     },
                 ],
                 [
-                    {text: '', main: true},
                     {
                         text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
                         span: 3,
@@ -526,16 +520,6 @@
                 "Achats (de marchandises) destinés à la revente: 607",
                 [
                     {
-                        field: 'NUM',
-                        text: 'COMPTE GENERAL',
-                        sortable: true,
-                        size: '120px',
-                        resizable: true,
-                        frozen: true,
-                        searchable: {operator: 'contains'},
-                        clipboardCopy: "Copier le N° Compte General"
-                    },
-                    {
                         field: 'CIN',
                         text: 'CIN',
                         sortable: true,
@@ -655,7 +639,6 @@
                     },
                 ],
                 [
-                    {text: '', main: true},
                     {
                         text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
                         span: 3,
@@ -1560,7 +1543,7 @@
             {id: 9, text: 'DEB'},
         ]
 
-        window.showChanged = function () {
+        window.showRegister = function () {
             if (!w2ui.foo) {
                 let form = new w2form({
                     box: '#foo',
@@ -1645,14 +1628,6 @@
                         }
                     ],
                     actions: {
-                        custom1: {
-                            text: 'Historique',
-                            class: 'w2ui-btn-green',
-                            style: 'text-transform: uppercase',
-                            onClick(event) {
-                                w2alert('Custom Action')
-                            }
-                        },
                         Reset() {
                             this.clear();
                         },
@@ -1717,6 +1692,100 @@
                 }
             }
         });
+
+
+        // widget configuration
+        let configPopup = {
+            layout: {
+                name: 'layout',
+                padding: 4,
+                panels: [
+                    {type: 'left', size: '50%', resizable: true, minSize: 300},
+                    {type: 'main', minSize: 300, style: 'overflow: hidden'}
+                ]
+            },
+            grid1: {
+                name: 'grid',
+                show: {
+                    header: true,
+                    footer: true,
+                    toolbar: false,
+                    lineNumbers: true
+                },
+                url: {
+                    get: "{% url 'app:get_history' %}",
+                    save: ""
+                },
+                style: 'border: 1px solid #efefef',
+                columns: [
+                    {field: 'societe', text: 'Societe', size: '50%', sortable: true, searchable: true},
+                    {field: 'target', text: 'Année', size: '33%', sortable: true, searchable: true},
+                    {field: 'destinataire', text: 'Destinataire'},
+                    {field: 'copie', text: 'Copie',},
+                    {
+                        field: 'status',
+                        text: 'Status',
+                        size: '60px',
+                        sortable: true,
+                        resizable: true,
+                        style: 'text-align: center',
+                        attr: 'readonly',
+                        editable: {type: 'checkbox', style: 'text-align: center'}
+                    }
+                ],
+                async onClick(event) {
+                    await event.complete
+                    let record = this.get(event.detail.recid)
+                    gridPopup2.clear()
+                    gridPopup2.add([
+                        {recid: 0, name: 'Uid :', value: record.recid},
+                        {recid: 1, name: 'Societe :', value: record.societe},
+                        {recid: 2, name: 'Année :', value: record.target},
+                        {recid: 3, name: 'Destinataire :', value: record.destinataire},
+                        {recid: 4, name: 'Copie :', value: record.copie},
+                        {recid: 5, name: 'Status :', value: record.status},
+                        {recid: 6, name: 'Message :', value: record.message},
+                        {recid: 7, name: "Date d'envoie :", value: record.created_at},
+                    ])
+                }
+            },
+            grid2: {
+                name: 'grid2',
+                box: '#grid2',
+                header: 'Details',
+                show: {header: true, columnHeaders: false},
+                columns: [
+                    {
+                        field: 'name',
+                        text: 'Name',
+                        size: '100px',
+                        style: 'background-color: #efefef; border-bottom: 1px solid white; padding-right: 5px;',
+                        attr: "align=right"
+                    },
+                    {field: 'value', text: 'Value', size: '100%'}
+                ]
+            }
+        }
+
+        // initialization in memory
+        let layoutPopup = new w2layout(configPopup.layout)
+        let gridPopup1 = new w2grid(configPopup.grid1)
+        let gridPopup2 = new w2grid(configPopup.grid2)
+
+        window.showHistory = function () {
+            w2popup.open({
+                title: 'Historique',
+                width: 1000,
+                height: 600,
+                showMax: true,
+                body: '<div id="main" style="position: absolute; left: 2px; right: 2px; top: 0px; bottom: 3px;"></div>'
+            })
+                .then(e => {
+                    layoutPopup.render('#w2ui-popup #main')
+                    layoutPopup.html('left', gridPopup1)
+                    layoutPopup.html('main', gridPopup2)
+                })
+        }
 
 
     </script>
