@@ -17,6 +17,7 @@ def fetch_data_from_database(canevas, target, types, societe):
         'status': 'error',
         'message': "Une erreur c'est produit !"
     }
+    connection = None
     try:
         # Charger le fichier de configuration JSON
         with open('config.json', 'r') as file:
@@ -61,6 +62,9 @@ def fetch_data_from_database(canevas, target, types, societe):
         result['message'] = "Erreur de Connexion à la base de donnée, verifier votre connexion internet !"
     except Exception as e:
         write_log(f"Erreur inattendue : {e}")
+    finally:
+        if connection:
+            connection.close()
     return result
 
 

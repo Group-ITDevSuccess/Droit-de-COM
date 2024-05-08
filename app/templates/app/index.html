@@ -132,8 +132,8 @@
             }
             table.toolbar = {
                 items: [
-                    {type: 'button', id: 'showHistory', icon: 'fas fa-hostory', text: 'Historique'},
-                    {type: 'button', id: 'showRegister', icon: 'fas fa-registered', text: 'Enregistrer'}
+                    {type: 'button', id: 'showHistory', icon: 'fas fa-history', text: 'Historique'},
+                    {type: 'button', id: 'showRegister', icon: 'fas fa-save', text: 'Enregistrer'}
                 ],
                 onClick(event) {
                     if (event.target === 'showRegister') {
@@ -1609,7 +1609,7 @@
                             }
                         },
                         {
-                            field: 'target', type: 'text',
+                            field: 'target', type: 'text',required: true,
                             html: {
                                 label: '',
                                 anchor: '%attach1%',
@@ -1628,7 +1628,7 @@
                         }
                     ],
                     actions: {
-                        Reset() {
+                        Clear() {
                             this.clear();
                         },
                         Save() {
@@ -1696,8 +1696,8 @@
 
         // widget configuration
         let configPopup = {
-            layout: {
-                name: 'layout',
+            layoutPopup: {
+                name: 'layoutPopup',
                 padding: 4,
                 panels: [
                     {type: 'left', size: '50%', resizable: true, minSize: 300},
@@ -1706,15 +1706,15 @@
             },
             grid1: {
                 name: 'grid',
+                liveSearch: true,
+                multiSearch: true,
+                multiSelect: true,
+                showExtraOnSearch: 1,
                 show: {
                     header: true,
                     footer: true,
-                    toolbar: false,
+                    toolbar: true,
                     lineNumbers: true
-                },
-                url: {
-                    get: "{% url 'app:get_history' %}",
-                    save: ""
                 },
                 style: 'border: 1px solid #efefef',
                 columns: [
@@ -1725,12 +1725,25 @@
                     {
                         field: 'status',
                         text: 'Status',
-                        size: '60px',
+                        size: '40px',
                         sortable: true,
-                        resizable: true,
+                        resizable: false,
+                        info: {
+                            fields: {
+                                'Status': (rec, ind, col_ind) => {
+                                    return rec.societe + ' (' + rec.target + ')'
+                                },
+                                'Spacer': '---',
+                                'Destinataire': 'destinataire',
+                                'Copie': 'copie',
+                                'Date': 'created_at',
+                            },
+                            showOn: 'mouseenter',
+                            options: {position: 'top'},
+                            style: 'color: green'
+                        },
+                        render: () => '<span style="color: silver"></span>',
                         style: 'text-align: center',
-                        attr: 'readonly',
-                        editable: {type: 'checkbox', style: 'text-align: center'}
                     }
                 ],
                 async onClick(event) {
@@ -1738,14 +1751,24 @@
                     let record = this.get(event.detail.recid)
                     gridPopup2.clear()
                     gridPopup2.add([
-                        {recid: 0, name: 'Uid :', value: record.recid},
-                        {recid: 1, name: 'Societe :', value: record.societe},
-                        {recid: 2, name: 'Année :', value: record.target},
-                        {recid: 3, name: 'Destinataire :', value: record.destinataire},
-                        {recid: 4, name: 'Copie :', value: record.copie},
-                        {recid: 5, name: 'Status :', value: record.status},
-                        {recid: 6, name: 'Message :', value: record.message},
-                        {recid: 7, name: "Date d'envoie :", value: record.created_at},
+                        {recid: 0, name: 'Uid ', value: record.recid},
+                        {recid: 1, name: 'Societe ', value: record.societe},
+                        {recid: 2, name: 'Année ', value: record.target},
+                        {recid: 3, name: 'Destinataire ', value: record.destinataire},
+                        {recid: 4, name: 'Copie ', value: record.copie},
+                        {
+                            recid: 5, name: 'Status ', value: record.status, render(record, extra) {
+                                console.log(record)
+                                if (extra.value === true) {
+                                    return '(Envoyer)'
+                                } else if (extra.value === false) {
+                                    return '(Non Envoyer)'
+                                }
+                                return extra.value
+                            }
+                        },
+                        {recid: 6, name: 'Message ', value: record.message},
+                        {recid: 7, name: "Date d'envoie ", value: record.created_at},
                     ])
                 }
             },
@@ -1768,9 +1791,11 @@
         }
 
         // initialization in memory
-        let layoutPopup = new w2layout(configPopup.layout)
+        let layoutPopup = new w2layout(configPopup.layoutPopup)
         let gridPopup1 = new w2grid(configPopup.grid1)
         let gridPopup2 = new w2grid(configPopup.grid2)
+
+        gridPopup1.load("{% url 'app:get_history' %}")
 
         window.showHistory = function () {
             w2popup.open({

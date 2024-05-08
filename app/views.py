@@ -12,19 +12,21 @@ from django.views.decorators.csrf import csrf_exempt
 from app.forms import SearchForm
 from app.models import Societe, History
 from data import fetch_data_from_database, export_data_in_config, custom_send_email
-from utils import write_log
+from utils import write_log, are_valid_uuids
 
 
 # Create your views here.
 @login_required
 def index(request):
-    form = SearchForm()
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
             societe = form.cleaned_data['societe']
             target = form.cleaned_data['target']
             return redirect('app:reverse_index', uid=societe, target=target)
+    else:
+        form = SearchForm()
+
     return render(request, 'app/index.html', {
         'path': request.path,
         'form': form
@@ -82,37 +84,41 @@ def load_data(request):
 def export_data(request):
     try:
         data = json.loads(request.GET.get('request')).get('record')
-        societe = Societe.objects.get(uid=data['uid'])
+        uid = are_valid_uuids(data['uid'])
+        if uid:
+            societe = Societe.objects.get(uid=uid)
 
-        file = export_data_in_config(societe=societe, champs=data['champs'], target=data['target'])
-        recipient = str(data['destinataire']).replace(';', ',')
-        copie = str(data['copie']).replace(';', ',')
-        send = custom_send_email(
-            target=data['target'],
-            recipient_email=recipient,
-            copie_email=copie,
-            attachment_filename=file,
-            message_text=data['message']
-        )
+            file = export_data_in_config(societe=societe, champs=data['champs'], target=data['target'])
+            recipient = str(data['destinataire']).replace(';', ',')
+            copie = str(data['copie']).replace(';', ',')
+            send = custom_send_email(
+                target=data['target'],
+                recipient_email=recipient,
+                copie_email=copie,
+                attachment_filename=file,
+                message_text=data['message']
+            )
 
-        # Save export history
-        history = History(
-            societe=societe.name,  # Assuming societe has a 'name' field
-            destinataire=recipient,
-            copie=copie,
-            target=data['target'],
-            status=send['status'] == 'success',  # Convert status to boolean
-            created_at=timezone.now(),
-            message=data['message']
-        )
-        history.save()
+            # Save export history
+            history = History(
+                societe=societe.name,  # Assuming societe has a 'name' field
+                destinataire=recipient,
+                copie=copie,
+                target=data['target'],
+                status=send['status'] == 'success',  # Convert status to boolean
+                created_at=timezone.now(),
+                message=data['message']
+            )
+            history.save()
 
-        return JsonResponse(send, safe=False)
+            return JsonResponse(send, safe=False)
+        return JsonResponse({'status': 'error', 'message': 'Societe Introuvable !'}, status=404, safe=False)
     except KeyError as e:
         return JsonResponse({'status': 'error', 'message': f'Missing key in request data: {e}'}, status=400)
     except ObjectDoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Societe not found'}, status=404)
     except Exception as e:
+        write_log(str(e))
         return JsonResponse({'status': 'error', 'message': f'An error occurred: {e}'}, status=500)
 
 
