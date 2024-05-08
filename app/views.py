@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from app.forms import SearchForm
 from app.models import Societe
-from data import fetch_data_from_database
+from data import fetch_data_from_database, export_data_in_config, custom_send_email
 from utils import write_log
 
 
@@ -36,6 +36,7 @@ def reverse_index(request, uid, target):
         'path': request.path,
         'form': form,
         'uid': uid,
+        'societe': Societe.objects.get(uid=uid).name,
         'target': target
     })
 
@@ -43,7 +44,9 @@ def reverse_index(request, uid, target):
 @login_required
 @csrf_exempt
 def load_data(request):
-    records = []
+    records = {
+        'status': "error"
+    }
 
     try:
         data = json.loads(request.GET.get('request'))
@@ -59,24 +62,32 @@ def load_data(request):
                 types=societe.type,
                 societe=societe,
             )
+        records['status'] = "success"
 
     except Societe.DoesNotExist:
         print("Societe Inexistant !")
+        records['message'] = "Societe Inexistant !"
+
     except Exception as e:
-        write_log(str(e))
-    return JsonResponse({
-        "total": len(records),
-        "records": records
-    }, safe=False)
+        write_log(f"Erreur : {str(e)}")
+        records['message'] = "Une erreur c'est produit !"
+    return JsonResponse(records, safe=False)
 
 
 @login_required
 @csrf_exempt
 def export_data(request):
-    print(request)
-    print(request.GET)
-    print(request.body)
-    print(request.POST)
-    pq_filename = request.GET.get('pq_filename')
-    print(pq_filename)
-    return JsonResponse({'filename': 'filename.json'}, safe=False)
+    data = json.loads(request.GET.get('request')).get('record')
+    societe = Societe.objects.get(uid=data['uid'])
+    print(data)
+    file = export_data_in_config(societe=societe, champs=data['champs'], target=data['target'])
+    recipient = str(data['destinataire']).replace(';', ',')
+    copie = str(data['copie']).replace(';', ',')
+    send = custom_send_email(
+        target=data['target'],
+        recipient_email=recipient,
+        copie_email=copie,
+        attachment_filename=file,
+        message_text=data['message']
+    )
+    return JsonResponse(send, safe=False)

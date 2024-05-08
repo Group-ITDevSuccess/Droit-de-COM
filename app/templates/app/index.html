@@ -24,6 +24,9 @@
             w2alert,
             w2grid,
             query,
+            w2form,
+            w2ui,
+            w2popup,
             w2utils
         } from "{% static 'assets/w2ui/w2ui-2.0.es6.min.js' %}";
 
@@ -84,10 +87,11 @@
                     statusSelection: true,
                     statusResponse: true,
                 },
-                {#columnTooltip: 'bottom',#}
+
                 tooltip: w2utils.locale('{% static 'assets/w2ui/locale/fr-fr.json' %}'),
                 columnGroups: columnsGroup,
                 columns: columns,
+
             }
         }
 
@@ -126,6 +130,16 @@
                     break;
 
             }
+            table.toolbar = {
+                items: [
+                    {type: 'button', id: 'showChanges', icon: 'fas fa-registered', text: 'Enregistrer'}
+                ],
+                onClick(event) {
+                    if (event.target === 'showChanges') {
+                        showChanged()
+                    }
+                }
+            };
             return table
         }
 
@@ -1317,12 +1331,12 @@
                         span: 2,
                         style: "background-color: green; color: #fff",
                         frozen: true
-                    },{
-                        text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
-                        span: 3,
-                        style: "background-color: green; color: #fff",
-                        frozen: true
-                    },
+                    }, {
+                    text: 'POUR LES FOURNISSEURS LOCAUX NE POSSEDANT PAS UN NIFONLINE',
+                    span: 3,
+                    style: "background-color: green; color: #fff",
+                    frozen: true
+                },
                     {text: '', main: true},
                     {text: 'ADRESSE COMPLETE ', style: "background-color: #5B9BD5; color: #fff;", span: 4},
                     {text: '', main: true},
@@ -1532,6 +1546,160 @@
                 .ok(() => {
                     console.log(message)
                 })
+        }
+
+        let champs = [
+            {id: 1, text: 'AI'},
+            {id: 2, text: 'ANDR'},
+            {id: 3, text: 'ADR'},
+            {id: 4, text: 'PSV'},
+            {id: 5, text: 'MV'},
+            {id: 6, text: 'SVT'},
+            {id: 7, text: 'PL'},
+            {id: 8, text: 'PLP'},
+            {id: 9, text: 'DEB'},
+        ]
+
+        window.showChanged = function () {
+            if (!w2ui.foo) {
+                let form = new w2form({
+                    box: '#foo',
+                    name: 'foo',
+
+                    url: "{% url 'app:export_data' %}",
+                    record: {
+                        uid: '{{ uid }}',
+                        destinataire: '{{ user.email }}',
+                        copie: 'sage@inviso-group.com',
+                        societe: '{{ societe }}',
+                        target: '{{ target }}',
+                        champs: [
+                            {'id': 1, 'text': 'AI'}, {'id': 2, 'text': 'ANDR'}, {'id': 3, 'text': 'ADR'}, {
+                                'id': 4, 'text': 'PSV'
+                            }, {'id': 5, 'text': 'MV'}, {'id': 6, 'text': 'SVT'}, {'id': 7, 'text': 'PL'}, {
+                                'id': 8,
+                                'text': 'PLP'
+                            }, {'id': 9, 'text': 'DEB'}],
+                        message: "Bonjour\n\nVoici en jointe le Droite de COM de {{ societe }} à l'années {{ target }}.\n\nCordialement,"
+                    },
+                    fields: [
+                        {
+                            field: 'destinataire', type: 'text', required: true,
+                            html: {
+                                group: 'Envoyée par Mail',
+                                column: 'before',
+                                span: 4,
+                                label: 'Déstinataire (,)',
+                                attr: 'style="width: calc(100% - 40px)"'
+                            }
+                        },
+                        {
+                            field: 'copie', type: 'text',
+                            html: {
+                                column: 'before',
+                                span: 4,
+                                label: 'Copie (,)',
+                                attr: 'style="width: calc(100% - 40px)"'
+                            }
+                        },
+                        {
+                            field: 'champs', type: 'enum', required: true,
+                            html: {
+                                group: 'Les Feuilles',
+                                column: 'before',
+                                groupStyle: 'border: 1px solid green; background-color: #eaffea',
+                                required: true,
+                                span: 3,
+                                label: 'Champs', attr: 'style="width: calc(100% - 40px)"'
+                            },
+                            options: {openOnFocus: true, items: w2utils.clone(champs)}
+                        },
+                        {
+                            field: 'societe', type: 'text', required: true,
+                            html: {
+                                column: 'before',
+                                text: ' %attach1%',
+                                span: 4,
+                                label: 'Société',
+                                attr: 'placeholder="Nom du Société",style="width: calc(60% - 100px)"'
+
+                            }
+                        },
+                        {
+                            field: 'target', type: 'text',
+                            html: {
+                                label: '',
+                                anchor: '%attach1%',
+                                attr: 'placeholder="state" style="width: calc(40% - 60px)"'
+                            }
+                        },
+                        {
+                            field: 'message', type: 'textarea',
+                            html: {
+                                group: 'Message',
+                                column: 'after',
+                                span: -1,
+                                label: '',
+                                attr: 'style="width: 100%; height: 100px; resize: none"'
+                            }
+                        }
+                    ],
+                    actions: {
+                        custom1: {
+                            text: 'Historique',
+                            class: 'w2ui-btn-green',
+                            style: 'text-transform: uppercase',
+                            onClick(event) {
+                                w2alert('Custom Action')
+                            }
+                        },
+                        Reset() {
+                            this.clear();
+                        },
+                        Save() {
+                            this.save();
+                            this.validate();
+                        },
+                        custom2: {
+                            text: '<span style="font-size: 16px">←</span> clicker pour télécharger',
+                            class: 'custom-class',
+                            style: 'background-image: none; background-color: transparent; border: 0px; margin: 0 0 0 -10px;',
+                            onClick() {
+                                w2alert('Not me!! The other button')
+                            }
+                        }
+                    },
+                    onSave: function (event) {
+                        w2popup.close()
+                    },
+                    onSubmit: function (event) {
+                    },
+                    onRequest: function (data) {
+                    },
+                    onProgress: function (event) {
+                    },
+                    onLoad: function (target, data) {
+                    },
+                    onError: function (event) {
+                    }
+
+                })
+            }
+            w2popup.open({
+                title: 'Panel et Outils',
+                body: '<div id="form" style="width: 100%; height: 100%;"></div>',
+                style: 'padding: 15px 0px 0px 0px',
+                width: 725,
+                height: 600,
+                showMax: true,
+                async onToggle(event) {
+                    await event.complete
+                    w2ui.foo.resize();
+                }
+            })
+                .then((event) => {
+                    w2ui.foo.render('#form')
+                });
         }
 
 

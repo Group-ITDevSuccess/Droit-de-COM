@@ -47,7 +47,9 @@ def load_data(request):
 
     uid = data.get('uid')
     target = data.get('target')
-    records = []
+    records = {
+        'status': 'error'
+    }
     if uid != '' and target != '':
         canevas = data.get('canevas')
         try:
@@ -60,11 +62,12 @@ def load_data(request):
             )
         except Societe.DoesNotExist:
             print("Societe Inexistant !")
+            records['message'] = "Societe Inexistant !"
         except Exception as e:
             write_log(str(e))
-    return JsonResponse({
-        "data": records
-    }, safe=False)
+            records['message'] = "Une erreur c'est produit !"
+        print(records)
+    return JsonResponse(records, safe=False)
 
 
 @login_required
