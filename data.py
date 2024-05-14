@@ -85,7 +85,7 @@ def export_data_in_config(societe, champs, target):
                 try:
                     champ_id = str(champ['id'])
                     champ_text = champ['text']
-                    columns = config_data['HEADER'][champ_id]
+                    columns = config_data['COLUMNS'][champ_id]
                     sql_query = (
                         str(config_data['SQL'][societe.type][champ_id])
                         .replace('{target}', target)
