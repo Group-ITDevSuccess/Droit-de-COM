@@ -21,7 +21,7 @@ class SearchForm(forms.Form):
     )
     target = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'selectpicker'}),
-        choices=[(year, str(year)) for year in range(date.today().year, 2019, -1)],
+        choices=[(year, str(year)) for year in range(date.today().year - 1, 2017, -1)],
         required=True,
         label="Date antérieure",
     )

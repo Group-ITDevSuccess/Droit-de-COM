@@ -1,37 +1,32 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
     <a class="navbar-brand" href="{% url 'app:index' %}">
-        <img src="{% static 'img/logo-inviso.ico' %}" width="35" height="35" class="d-inline-block align-top" alt=""
-             loading="lazy">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <img src="{% static "img/inviso-group.png" %}" class="border m-0 p-0" width="40" height="40" alt="">
+        Droit de COM Société</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if path == '/' %}active{% endif %}">
-                <a class="nav-link" href="{% url 'app:index' %}">Home <span
+                <a class="nav-link" href="{% url 'app:index' %}">Accueil <span
                         class="sr-only">(current)</span></a>
             </li>
-            {% if user.is_staff %}
-                <li class="nav-item {% if path == '/accounts/administrations/' %}active{% endif %}">
-                    <a class="nav-link " href="{% url 'guard:index' %}" tabindex="-1">Administration</a>
-                </li>
-            {% endif %}
+            <li class="nav-item {% if path == '/administation/' %}active{% endif %}">
+                <a class="nav-link {% if not user.is_staff %}disabled{% endif %}" href="">Administration</a>
+            </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'app:index' %}" method="post" id="FormSearch">
+        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'app:index' %}" id="FormSearch">
             {% csrf_token %}
+            <label for="{{ form.societe.id_label }}" class="text-white font-weight-bold m-3 mt-2">Societe : </label>
             {{ form.societe }}
             {{ form.target }}
-            <button class="btn btn-outline-success my-2 my-sm-0" id="submitForm" type="submit" hidden="hidden">Search</button>
+            <a href="{% url 'guard:logout' %}" class="btn btn-outline-danger ml-2 my-sm-0" type="submit">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </form>
-        <div class="btn text-white">
-            <i class="fas fa-user " title=""></i> ({{ user.username }})
-        </div>
-        <div class="navbar-text d-flex my-2 my-lg-0">
-            <a href="{% url 'guard:logout' %}" class="btn btn-outline-danger ml-1 my-2 my-sm-0">Déconnecter</a>
-        </div>
     </div>
 </nav>
